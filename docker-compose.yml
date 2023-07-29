@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:latest  # Make sure to pull the ARM64-compatible version
+    platform: linux/arm64
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mydb
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+  web:
+    build: ./server
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - ./server:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  
+
+volumes:
+  postgres_data:
