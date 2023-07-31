@@ -1,5 +1,4 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
 from .database import Base
 
 
@@ -9,13 +8,12 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True)
     hashed_password = Column(String(255), unique=True)
-    is_active = Column(Boolean, default=True)
 
 class Movie(Base):
-    __tablename__ = "movie"
+    __tablename__ = "movies"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(255), unique=True)
-    score = Column(String(255), unique=True)
-    is_active = Column(Boolean, default=True)
+    year = Column(Integer)
+    
 

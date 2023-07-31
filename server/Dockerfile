@@ -4,6 +4,8 @@ FROM python:3.8
 # Set the working directory
 WORKDIR /app
 
+COPY requirements.txt /app/
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
@@ -13,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 COPY ./app /app
 
 # Install Python dependencies
-RUN pip install fastapi uvicorn sqlalchemy mysqlclient
+RUN pip install -r requirements.txt
 
 # Define the command to run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

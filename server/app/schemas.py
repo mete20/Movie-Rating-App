@@ -11,22 +11,21 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
     class Config:
         from_attributes = True
         
 
 class MovieBase(BaseModel):
     name: str
+    year: int
 
 
 class MovieCreate(MovieBase):
-    score: str
+    pass
 
 
 class Movie(MovieBase):
     id: int
-    is_active: bool
     class Config:
         from_attributes = True
 
