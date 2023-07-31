@@ -1,13 +1,20 @@
-# Pull base image
-FROM python:3.9
+# Use an official Python image
+FROM python:3.8
 
-# Set work directory
+# Set the working directory
 WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt 
-RUN pip install mariadb
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    default-libmysqlclient-dev \
+    build-essential
 
-# Copy project
-COPY . .
+# Copy the local app folder to the container
+COPY ./app /app
+
+# Install Python dependencies
+RUN pip install fastapi uvicorn sqlalchemy mysqlclient
+
+# Define the command to run the application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+

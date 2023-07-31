@@ -7,15 +7,15 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    email = Column(String(255), unique=True)
+    hashed_password = Column(String(255), unique=True)
     is_active = Column(Boolean, default=True)
 
 class Movie(Base):
-    __tablename__ = "moview"
+    __tablename__ = "movie"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
-    score = Column(String)
+    name = Column(String(255), unique=True)
+    score = Column(String(255), unique=True)
     is_active = Column(Boolean, default=True)
 
