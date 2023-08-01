@@ -39,18 +39,19 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-'''
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
-):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
-'''
+@app.post("/movies/", response_model=schemas.Movie)
+def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
+    return crud.create_movie(db=db, movie=movie)
 
 
-'''
-@app.get("/movies/", response_model=List[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_movies(db, skip=skip, limit=limit)
-    return items
-'''
+@app.get("/movies/", response_model=List[schemas.Movie])
+def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    movies = crud.get_movies(db, skip=skip, limit=limit)
+    return movies
+
+@app.get("/movies/{movie_id}", response_model=schemas.Movie)
+def read_user(movie_id: int, db: Session = Depends(get_db)):
+    db_movie = crud.get_movie(db, movie_id=movie_id)
+    if db_movie is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+    return db_movie
