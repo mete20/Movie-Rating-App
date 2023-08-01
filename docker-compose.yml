@@ -8,8 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD} #1234
       MYSQL_DATABASE: ${DATABASE} #mydb
-      MYSQL_USER: ${USERNAME}
-      MYSQL_PASSWORD: ${PASSWORD} #2002
+      #MYSQL_USER: ${USERNAME}
+     #MYSQL_PASSWORD: ${PASSWORD} #2002
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
@@ -26,7 +26,7 @@ services:
       environment:
         PASSWORD: ${PASSWORD} #2002
         HOST: ${HOST}
-        MYSQL_ROOT_PASSWORD: ${PASSWORD} #1234
+        MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD} #1234
         MYSQL_DATABASE: ${DATABASE} 
         USERNAME: ${USERNAME}
         MYSQL_PORT: ${PORT}
