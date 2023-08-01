@@ -13,6 +13,7 @@ class User(UserBase):
     id: int
     class Config:
         from_attributes = True
+
         
 
 class MovieBase(BaseModel):
@@ -28,4 +29,3 @@ class Movie(MovieBase):
     id: int
     class Config:
         from_attributes = True
-

@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-
 from . import models, schemas
 
 
@@ -38,3 +37,4 @@ def create_movie(db: Session, movie: schemas.MovieCreate):
     db.commit()
     db.refresh(db_movie)
     return db_movie
+
