@@ -1,17 +1,18 @@
-version: '3.1'
+version: '3.8'
 
 services:
   db:
     image: mysql:latest  
-    platform: linux/arm64
+    platform: ${PLATFORM} #linux/arm64
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: mydb
+      MYSQL_ROOT_PASSWORD: ${PASSWORD} #2002
+      MYSQL_DATABASE: ${DATABASE} #mydb
+      #MYSQL_USER: ${USERNAME}
     volumes:
       - mysql-data:/var/lib/mysql
     ports:
-      - 3306:3306
+      - 3307:3306
 
   web:
       build: ./server
@@ -21,6 +22,13 @@ services:
         - 8000:8000
       depends_on:
         - db
+      environment:
+        PASSWORD: ${PASSWORD}
+        HOST: ${HOST}
+        MYSQL_ROOT_PASSWORD: ${PASSWORD} #2002
+        MYSQL_DATABASE: ${DATABASE} 
+        USERNAME: ${USERNAME}
+        MYSQL_PORT: ${PORT}
 
 volumes:
   mysql-data:
