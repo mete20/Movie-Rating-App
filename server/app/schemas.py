@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 
 
+
 class UserBase(BaseModel):
     email: str
 
@@ -11,21 +12,22 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    is_active: bool
     class Config:
-        from_attributes = True
-
+        orm_mode = True
         
 
 class MovieBase(BaseModel):
     name: str
-    year: int
 
 
 class MovieCreate(MovieBase):
-    pass
+    score: str
 
 
 class Movie(MovieBase):
     id: int
+    is_active: bool
     class Config:
-        from_attributes = True
+        orm_mode = True
+
