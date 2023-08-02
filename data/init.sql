@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS movies(
   ,Runtime INTEGER  NOT NULL
   ,Rating  NUMERIC(3,1) NOT NULL
   ,Votes   INTEGER NOT NULL
-  ,Revenue NUMERIC(6,2) 
+  ,Revenue NUMERIC(6,2) NOT NULL
 );
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (0,'The Godfather',1972,175,9.2,1667868,134.97);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (1,'The Shawshank Redemption',1994,142,9.3,2410575,28.34);
