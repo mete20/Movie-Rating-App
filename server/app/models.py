@@ -1,8 +1,6 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from .database import Base
-from sqlalchemy.sql import func
-from sqlalchemy.orm import relationship
-
+from typing import Optional
 
 class User(Base):
     __tablename__ = "users"
@@ -10,7 +8,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True)
     hashed_password = Column(String(255), unique=True)
-
+    
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -21,5 +19,7 @@ class Movie(Base):
     Runtime = Column(Integer)
     Rating = Column(Float)
     Votes = Column(Integer)
-    Revenue = Column(Float)
+    Revenue = Column(Float, nullable=True)
 
+
+    

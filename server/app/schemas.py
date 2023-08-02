@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-
+from typing import Optional
 
 class UserBase(BaseModel):
     email: str
@@ -21,7 +21,7 @@ class MovieBase(BaseModel):
     Runtime: int
     Rating: float
     Votes: int
-    Revenue: float
+    Revenue: Optional[float]
 
 
 class MovieCreate(MovieBase):
@@ -32,4 +32,3 @@ class Movie(MovieBase):
     MovieID: int
     class Config:
         from_attributes = True
-
