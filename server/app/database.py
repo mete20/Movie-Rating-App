@@ -12,8 +12,6 @@ port = os.getenv("MYSQL_PORT", 3306)
 
 DATABASE_URL = f"mysql://root:{password}@{host}/{database}"
 
-#DATABASE_URL = "mysql://root:1234@db/mydb"
-
 engine = create_engine(DATABASE_URL,echo=True)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
