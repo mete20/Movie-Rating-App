@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float
 from .database import Base
 
 
@@ -12,8 +12,12 @@ class User(Base):
 class Movie(Base):
     __tablename__ = "movies"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    name = Column(String(255), unique=True)
-    year = Column(Integer)
+    MovieID = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    Name = Column(String(255), unique=True)
+    Year = Column(Integer)
+    Runtime = Column(Integer)
+    Rating = Column(Float)
+    Votes = Column(Integer)
+    Revenue = Column(Float)
     
 

@@ -2,18 +2,20 @@ version: '3.8'
 
 services:
   db:
-    image: mysql:latest  
+    image: mysql:8.0
     platform: ${PLATFORM} #linux/arm64 linux/amd64
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD} 
-      MYSQL_DATABASE: ${DATABASE} 
-      #MYSQL_USER: ${USERNAME}
-      #MYSQL_PASSWORD: ${PASSWORD} 
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - ${MYSQL_PORT}:3306
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    env_file:
+      - .env
 
   web:
       build: ./server
@@ -23,13 +25,8 @@ services:
         - 8000:8000
       depends_on:
         - db
-      environment:
-        PASSWORD: ${PASSWORD}
-        HOST: ${HOST}
-        MYSQL_ROOT_PASSWORD: ${ROOT_PASSWORD} 
-        MYSQL_DATABASE: ${DATABASE} 
-        USERNAME: ${USERNAME}
-        MYSQL_PORT: ${PORT}
+      env_file:
+        - .env
 
 volumes:
   mysql-data:
