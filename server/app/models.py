@@ -22,9 +22,4 @@ class Movie(Base):
     Rating = Column(Float)
     Votes = Column(Integer)
     Revenue = Column(Float)
-    
-    
-    user = relationship("User", back_populates="ratings")
-    movie = relationship("Movie", back_populates="ratings")
-    
 
