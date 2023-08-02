@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS movies(
   ,Runtime INTEGER  NOT NULL
   ,Rating  NUMERIC(3,1) NOT NULL
   ,Votes   INTEGER NOT NULL
-  ,Revenue NUMERIC(6,2) NOT NULL
+  ,Revenue NUMERIC(6,2) 
 );
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (0,'The Godfather',1972,175,9.2,1667868,134.97);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (1,'The Shawshank Redemption',1994,142,9.3,2410575,28.34);
@@ -21,7 +21,7 @@ INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (10,'V
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (11,'Psycho',1960,109,8.5,618528,32.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (12,'The Godfather: Part II',1974,202,9,1158763,57.30);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (13,'On the Waterfront',1954,108,8.1,145132,9.60);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (14,'Sunset Blvd.',1950,110,8.4,206285,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (14,'Sunset Blvd.',1950,110,8.4,206285,123.45);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (15,'Forrest Gump',1994,142,8.8,1862340,330.25);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (16,'The Sound of Music',1965,172,8,211417,163.21);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (17,'12 Angry Men',1957,96,9,710362,4.36);
@@ -33,7 +33,7 @@ INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (22,'T
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (23,'Chinatown',1974,130,8.2,301963,8.49);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (24,'The Bridge on the River Kwai',1957,161,8.1,207463,44.91);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (25,'Singin'' in the Rain',1952,103,8.3,224087,8.82);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (26,'It''s a Wonderful Life',1946,130,8.6,414116,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (26,'It''s a Wonderful Life',1946,130,8.6,414116,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (27,'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',1964,95,8.4,459193,0.28);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (28,'Some Like It Hot',1959,121,8.2,248979,25.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (29,'Ben-Hur',1959,212,8.1,223667,74.70);
@@ -48,14 +48,14 @@ INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (37,'U
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (38,'Indiana Jones and the Raiders of the Lost Ark',1981,115,8.4,901570,248.16);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (39,'Rocky',1976,120,8.1,530654,117.24);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (40,'A Streetcar Named Desire',1951,122,8,100929,8.00);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (41,'The Philadelphia Story',1940,112,7.9,64819,****);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (42,'To Kill a Mockingbird',1962,129,8.3,298661,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (41,'The Philadelphia Story',1940,112,7.9,64819,3131.31);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (42,'To Kill a Mockingbird',1962,129,8.3,298661,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (43,'An American in Paris',1951,114,7.2,31222,4.50);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (44,'The Best Years of Our Lives',1946,170,8.1,58356,23.65);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (45,'My Fair Lady',1964,170,7.8,88799,72.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (46,'A Clockwork Orange',1971,136,8.3,772642,6.21);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (47,'Doctor Zhivago',1965,197,8,71355,111.72);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (48,'The Searchers',1956,119,7.9,82238,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (48,'The Searchers',1956,119,7.9,82238,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (49,'Jaws',1975,124,8,553072,260.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (50,'Patton',1970,172,7.9,95174,61.70);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (51,'Butch Cassidy and the Sundance Kid',1969,110,8,204623,102.31);
@@ -72,31 +72,31 @@ INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (61,'T
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (62,'Goodfellas',1990,146,8.7,1048196,46.84);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (63,'The Deer Hunter',1978,183,8.1,317920,48.98);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (64,'All Quiet on the Western Front',1930,152,8.1,58093,3.27);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (65,'Bonnie and Clyde',1967,111,7.8,104752,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (65,'Bonnie and Clyde',1967,111,7.8,104752,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (66,'The French Connection',1971,104,7.7,113298,15.63);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (67,'City Lights',1931,87,8.5,171953,0.02);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (68,'It Happened One Night',1934,105,8.1,96430,4.36);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (69,'A Place in the Sun',1951,122,7.8,20721,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (69,'A Place in the Sun',1951,122,7.8,20721,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (70,'Midnight Cowboy',1969,113,7.8,103229,44.79);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (71,'Mr. Smith Goes to Washington',1939,129,8.1,109129,9.60);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (72,'Rain Man',1988,133,8,482164,178.80);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (73,'Annie Hall',1977,93,8,255035,39.20);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (74,'Fargo',1996,98,8.1,632090,24.61);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (75,'Giant',1956,201,7.6,34944,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (75,'Giant',1956,201,7.6,34944,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (76,'Shane',1953,118,7.6,37972,20.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (77,'The Grapes of Wrath',1940,129,8.1,86714,0.06);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (78,'The Green Mile',1999,189,8.6,1179670,136.80);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (79,'Close Encounters of the Third Kind',1977,138,7.6,188661,132.09);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (80,'Nashville',1975,160,7.7,24395,14.82);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (81,'Network',1976,121,8.1,148131,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (81,'Network',1976,121,8.1,148131,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (82,'The Graduate',1967,106,8,257655,104.95);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (83,'American Graffiti',1973,110,7.4,83737,115.00);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (84,'Pulp Fiction',1994,154,8.9,1871659,107.93);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (85,'Terms of Endearment',1983,132,7.4,56512,108.42);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (86,'Good Will Hunting',1997,126,8.3,884168,138.43);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (87,'The African Queen',1951,105,7.8,72884,0.54);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (88,'Stagecoach',1939,96,7.9,44998,****);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (89,'Mutiny on the Bounty',1935,132,7.7,21307,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (88,'Stagecoach',1939,96,7.9,44998,3131.31);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (89,'Mutiny on the Bounty',1935,132,7.7,21307,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (90,'The Great Dictator',1940,125,8.4,207789,0.29);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (91,'Double Indemnity',1944,107,8.3,146783,5.72);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (92,'The Maltese Falcon',1941,100,8,151061,2.11);
@@ -104,6 +104,6 @@ INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (93,'W
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (94,'Taxi Driver',1976,114,8.3,745272,28.26);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (95,'Rear Window',1954,112,8.5,454266,36.76);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (96,'The Third Man',1949,93,8.1,161967,0.45);
-INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (97,'Rebel Without a Cause',1955,111,7.7,85254,****);
+INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (97,'Rebel Without a Cause',1955,111,7.7,85254,3131.31);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (98,'North by Northwest',1959,136,8.3,305149,13.28);
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (99,'Yankee Doodle Dandy',1942,126,7.7,14392,11.80);
