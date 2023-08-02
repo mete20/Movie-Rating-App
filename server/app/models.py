@@ -10,8 +10,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True)
     hashed_password = Column(String(255), unique=True)
-    
-    ratings = relationship("UserRating", back_populates="user")
+
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -24,16 +23,6 @@ class Movie(Base):
     Votes = Column(Integer)
     Revenue = Column(Float)
     
-    ratings = relationship("UserRating", back_populates="movie")
-
-class UserRating(Base):
-    __tablename__ = "user_ratings"
-
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True) ## It should be the combination of the two foreing keys
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    movie_id = Column(Integer, ForeignKey('movies.MovieID'), nullable=False)
-    rating = Column(Float, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     user = relationship("User", back_populates="ratings")
     movie = relationship("Movie", back_populates="ratings")
