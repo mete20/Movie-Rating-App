@@ -34,15 +34,18 @@ class Movie(MovieBase):
         from_attributes = True
         
 
-#### UserMovie
+#### Rating
 
 
-class UserMovieCreate(BaseModel):
+class RatingBase(BaseModel):
     user_id: int
     movie_id: int
     rating: int
+    
+class RatingCreate(RatingBase):
+    pass
 
-class UserMovie(UserMovieCreate):
+class Rating(RatingBase):
     id: int
 
     class Config:

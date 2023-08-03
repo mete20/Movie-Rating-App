@@ -41,9 +41,20 @@ def create_movie(db: Session, movie: schemas.MovieCreate):
 
 
 
-def create_user_movie(db: Session, user_movie: schemas.UserMovieCreate):
-    db_user_movie = models.UserMovie(**user_movie.dict())
-    db.add(db_user_movie)
+def create_rating(db: Session, rating: schemas.RatingCreate):
+    db_rating = models.Rating(**rating.dict())
+    db.add(db_rating)
     db.commit()
-    db.refresh(db_user_movie)
-    return db_user_movie
+    db.refresh(db_rating)
+    return db_rating
+
+'''
+def update_movie_rating(db: Session, movie_id: int):
+    movie = db.query(Movie).filter(Movie.id == movie_id).first()
+    user_movie_ratings = db.query(UserMovie).filter(UserMovie.movie_id == movie_id)
+    total_rating = sum(rating.rating for rating in user_movie_ratings)
+    average_rating = total_rating / user_movie_ratings.count()
+    movie.rating = average_rating
+    db.commit()
+    db.refresh(movie)
+'''
