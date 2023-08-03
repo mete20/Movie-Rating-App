@@ -27,7 +27,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/users/", response_model=List[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_users(skip: int = 0, limit: int = 200, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
@@ -46,7 +46,7 @@ def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/movies/", response_model=List[schemas.Movie])
-def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_movies(skip: int = 0, limit: int = 200, db: Session = Depends(get_db)):
     movies = crud.get_movies(db, skip=skip, limit=limit)
     return movies
 
