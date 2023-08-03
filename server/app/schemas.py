@@ -32,3 +32,18 @@ class Movie(MovieBase):
     MovieID: int
     class Config:
         from_attributes = True
+        
+
+#### UserMovie
+
+
+class UserMovieCreate(BaseModel):
+    user_id: int
+    movie_id: int
+    rating: int
+
+class UserMovie(UserMovieCreate):
+    id: int
+
+    class Config:
+        orm_mode = True

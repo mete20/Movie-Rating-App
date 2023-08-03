@@ -56,3 +56,7 @@ def read_user(movie_id: int, db: Session = Depends(get_db)):
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
     return db_movie
+
+@app.post("/user_movie/", response_model=schemas.UserMovie)
+def create_rating(user_movie: schemas.UserMovieCreate, db: Session = Depends(get_db)):
+    return crud.create_user_movie(db=db, user_movie=user_movie)

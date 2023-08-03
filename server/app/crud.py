@@ -38,3 +38,12 @@ def create_movie(db: Session, movie: schemas.MovieCreate):
     db.commit()
     db.refresh(db_movie)
     return db_movie
+
+
+
+def create_user_movie(db: Session, user_movie: schemas.UserMovieCreate):
+    db_user_movie = models.UserMovie(**user_movie.dict())
+    db.add(db_user_movie)
+    db.commit()
+    db.refresh(db_user_movie)
+    return db_user_movie
