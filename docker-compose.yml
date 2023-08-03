@@ -6,8 +6,9 @@ services:
     platform: ${PLATFORM} #linux/arm64 linux/amd64
     restart: always
     volumes:
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/data/init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql-data:/var/lib/mysql
-      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - ${MYSQL_PORT}:3306
     environment:
@@ -16,6 +17,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     env_file:
       - .env
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci','--default-time-zone=+03:00']
 
   web:
       build: ./server

@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS movies(
    MovieID INTEGER  NOT NULL PRIMARY KEY 
-  ,Name    VARCHAR(68) NOT NULL
-  ,Year    INTEGER  NOT NULL
-  ,Runtime INTEGER  NOT NULL
-  ,Rating  NUMERIC(3,1) NOT NULL
-  ,Votes   INTEGER NOT NULL
+  ,Name    VARCHAR(68)
+  ,Year    INTEGER
+  ,Runtime INTEGER
+  ,Rating  NUMERIC(3,1)
+  ,Votes   INTEGER
   ,Revenue NUMERIC(6,2)
 );
 INSERT INTO movies(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (0,'The Godfather',1972,175,9.2,1667868,134.97);
