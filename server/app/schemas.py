@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 class UserBase(BaseModel):
@@ -29,7 +29,7 @@ class MovieCreate(MovieBase):
 
 
 class Movie(MovieBase):
-    MovieID: int
+    MovieID: Optional[int] = Field(default=None, primary_key=True)    
     class Config:
         from_attributes = True
         

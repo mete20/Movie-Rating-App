@@ -1,12 +1,4 @@
-CREATE TABLE IF NOT EXISTS movie(
-   MovieID INTEGER  NOT NULL PRIMARY KEY 
-  ,Name    VARCHAR(68) NOT NULL
-  ,Year    INTEGER  NOT NULL
-  ,Runtime INTEGER  NOT NULL
-  ,Rating  NUMERIC(3,1) NOT NULL
-  ,Votes   INTEGER NOT NULL
-  ,Revenue NUMERIC(6,2)
-);
+
 INSERT INTO movie(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (0,'The Godfather',1972,175,9.2,1667868,134.97);
 INSERT INTO movie(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (1,'The Shawshank Redemption',1994,142,9.3,2410575,28.34);
 INSERT INTO movie(MovieID,Name,Year,Runtime,Rating,Votes,Revenue) VALUES (2,'Schindler''s List',1993,195,8.9,1242057,96.90);

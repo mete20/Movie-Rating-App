@@ -61,3 +61,4 @@ def read_user(movie_id: int, db: Session = Depends(get_db)):
 @app.post("/ratings/", response_model=schemas.Rating)
 def create_rating(rating: schemas.RatingCreate, db: Session = Depends(get_db)):
     return crud.create_rating(db=db, rating=rating)
+

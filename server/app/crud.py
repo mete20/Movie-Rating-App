@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-
+from sqlalchemy import func
 from . import models, schemas
 
 
@@ -25,7 +25,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 
 def get_movie(db: Session, movie_id: int):
-    return db.query(models.Movie).filter(models.Movie.id == movie_id).first()
+    return db.query(models.Movie).filter(models.Movie.MovieID == movie_id).first()
 
 
 def get_movies(db: Session, skip: int = 0, limit: int = 200):
@@ -33,7 +33,7 @@ def get_movies(db: Session, skip: int = 0, limit: int = 200):
 
 
 def create_movie(db: Session, movie: schemas.MovieCreate):
-    db_movie = models.Movie(name = movie.name, year=movie.year)
+    db_movie = models.Movie(**movie.dict())
     db.add(db_movie)
     db.commit()
     db.refresh(db_movie)
@@ -43,18 +43,28 @@ def create_movie(db: Session, movie: schemas.MovieCreate):
 
 def create_rating(db: Session, rating: schemas.RatingCreate):
     db_rating = models.Rating(**rating.dict())
+    movie_id = db_rating.movie_id
     db.add(db_rating)
     db.commit()
     db.refresh(db_rating)
+    update_movie_rating(db=db, movie_id=movie_id)
     return db_rating
 
-'''
+
 def update_movie_rating(db: Session, movie_id: int):
-    movie = db.query(Movie).filter(Movie.id == movie_id).first()
-    user_movie_ratings = db.query(UserMovie).filter(UserMovie.movie_id == movie_id)
-    total_rating = sum(rating.rating for rating in user_movie_ratings)
-    average_rating = total_rating / user_movie_ratings.count()
-    movie.rating = average_rating
+    
+
+    # Calculate the average rating
+    average_rating = db.query(func.avg(models.Rating.rating)).filter(models.Rating.movie_id == movie_id).scalar()
+    # Get the movie record
+    movie = db.query(models.Movie).filter(models.Movie.MovieID == movie_id).first()
+    # Update the Rating column with the calculated average rating
+    # Calculate the new average rating
+    new_rating = ((float(average_rating) * (movie.Votes - 1)) + movie.Rating) / movie.Votes
+    # Update the Rating column with the calculated new rating
+    movie.Rating = new_rating
+    movie.Votes += 1
+    # Commit the changes to the database
     db.commit()
-    db.refresh(movie)
-'''
+
+    return movie
