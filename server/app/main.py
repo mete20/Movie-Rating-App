@@ -9,6 +9,7 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
+
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -56,3 +57,12 @@ def read_user(movie_id: int, db: Session = Depends(get_db)):
     if db_movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
     return db_movie
+
+
+@app.post("/ratings/", response_model=schemas.Rating)
+def create_rating(rating: schemas.RatingCreate, db: Session = Depends(get_db)):
+    try:
+        return crud.create_rating(db=db, rating=rating)
+    except crud.DuplicateEntry:
+        raise HTTPException(status_code=400, detail="Rating already exists for this user and movie")
+
