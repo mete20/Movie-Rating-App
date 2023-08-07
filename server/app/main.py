@@ -43,6 +43,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/movies/", response_model=schemas.Movie)
 def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
+    db_movie = crud.get_movie_by_name(db, name= movie.Name)
+    if db_movie:
+        raise HTTPException(status_code=400, detail="Movie already exist")
     return crud.create_movie(db=db, movie=movie)
 
 
@@ -61,8 +64,18 @@ def read_user(movie_id: int, db: Session = Depends(get_db)):
 
 @app.post("/ratings/", response_model=schemas.Rating)
 def create_rating(rating: schemas.RatingCreate, db: Session = Depends(get_db)):
-    try:
-        return crud.create_rating(db=db, rating=rating)
-    except crud.DuplicateEntry:
+    db_user = crud.get_user(db, user_id = rating.user_id)
+    db_movie = crud.get_movie(db, rating.movie_id)
+
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="User not found")
+    
+    if db_movie is None:
+        raise HTTPException(status_code=400, detail="Movie not found")
+    
+    is_rating_exist = crud.is_rating_exist(db, rating.user_id, rating.movie_id)
+    
+    if is_rating_exist:
         raise HTTPException(status_code=400, detail="Rating already exists for this user and movie")
+    return crud.create_rating(db, rating)
 
