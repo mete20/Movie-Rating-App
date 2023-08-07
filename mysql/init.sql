@@ -1,15 +1,3 @@
-CREATE TABLE IF NOT EXISTS movie(
-   MovieID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY 
-  ,Name    VARCHAR(68)
-  ,Year    INTEGER
-  ,Runtime INTEGER
-  ,Rating  NUMERIC(10,8)
-  ,Votes   INTEGER
-  ,Revenue NUMERIC(6,2) NULL
-);
-LOAD DATA INFILE '/var/lib/mysql-files/data/movies.csv' 
-INTO TABLE movie
-FIELDS TERMINATED BY ',' 
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n'
-IGNORE 1 ROWS;
+GRANT FILE ON *.* TO 'eren'@'%';
+FLUSH PRIVILEGES;
+
