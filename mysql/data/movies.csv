@@ -1,0 +1,101 @@
+MovieID,Name,Year,Runtime,Rating,Votes,Revenue
+1,The Godfather,1972,175,9.2,1667868,134.97
+2,The Shawshank Redemption,1994,142,9.3,2410575,28.34
+3,Schindler's List,1993,195,8.9,1242057,96.9
+4,Raging Bull,1980,129,8.2,328641,23.38
+5,Casablanca,1942,102,8.5,532397,1.02
+6,Citizen Kane,1941,119,8.3,414105,1.59
+7,Gone with the Wind,1939,238,8.1,295605,198.68
+8,The Wizard of Oz,1939,102,8,375435,2.08
+9,One Flew Over the Cuckoo's Nest,1975,133,8.7,937216,112
+10,Lawrence of Arabia,1962,228,8.3,273727,44.82
+11,Vertigo,1958,128,8.3,372991,3.2
+12,Psycho,1960,109,8.5,618528,32
+13,The Godfather: Part II,1974,202,9,1158763,57.3
+14,On the Waterfront,1954,108,8.1,145132,9.6
+15,Sunset Blvd.,1950,110,8.4,206285,\N
+16,Forrest Gump,1994,142,8.8,1862340,330.25
+17,The Sound of Music,1965,172,8,211417,163.21
+18,12 Angry Men,1957,96,9,710362,4.36
+19,West Side Story,1961,153,7.5,99708,43.66
+20,Star Wars: Episode IV - A New Hope,1977,121,8.6,1255811,322.74
+21,2001: A Space Odyssey,1968,149,8.3,617167,56.95
+22,E.T. the Extra-Terrestrial,1982,115,7.8,379818,435.11
+23,The Silence of the Lambs,1991,118,8.6,1305188,130.74
+24,Chinatown,1974,130,8.2,301963,8.49
+25,The Bridge on the River Kwai,1957,161,8.1,207463,44.91
+26,Singin' in the Rain,1952,103,8.3,224087,8.82
+27,It's a Wonderful Life,1946,130,8.6,414116,\N
+28,Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb,1964,95,8.4,459193,0.28
+29,Some Like It Hot,1959,121,8.2,248979,25
+30,Ben-Hur,1959,212,8.1,223667,74.7
+31,Apocalypse Now,1979,147,8.4,619696,83.47
+32,Amadeus,1984,160,8.3,376325,51.97
+33,The Lord of the Rings: The Return of the King,2003,201,8.9,1679792,377.85
+34,Gladiator,2000,155,8.5,1373645,187.71
+35,Titanic,1997,194,7.8,1074677,659.33
+36,From Here to Eternity,1953,118,7.6,44267,30.5
+37,Saving Private Ryan,1998,169,8.6,1269021,216.54
+38,Unforgiven,1992,130,8.2,384036,101.16
+39,Indiana Jones and the Raiders of the Lost Ark,1981,115,8.4,901570,248.16
+40,Rocky,1976,120,8.1,530654,117.24
+41,A Streetcar Named Desire,1951,122,8,100929,8
+42,The Philadelphia Story,1940,112,7.9,64819,\N
+43,To Kill a Mockingbird,1962,129,8.3,298661,\N
+44,An American in Paris,1951,114,7.2,31222,4.5
+45,The Best Years of Our Lives,1946,170,8.1,58356,23.65
+46,My Fair Lady,1964,170,7.8,88799,72
+47,A Clockwork Orange,1971,136,8.3,772642,6.21
+48,Doctor Zhivago,1965,197,8,71355,111.72
+49,The Searchers,1956,119,7.9,82238,\N
+50,Jaws,1975,124,8,553072,260
+51,Patton,1970,172,7.9,95174,61.7
+52,Butch Cassidy and the Sundance Kid,1969,110,8,204623,102.31
+53,The Treasure of the Sierra Madre,1948,126,8.2,116762,5.01
+54,"The Good, the Bad and the Ugly",1966,178,8.8,703479,6.1
+55,The Apartment,1960,125,8.3,168298,18.6
+56,Platoon,1986,120,8.1,388532,138.53
+57,High Noon,1952,85,8,98979,9.45
+58,Braveheart,1995,178,8.3,976103,75.6
+59,Dances with Wolves,1990,181,8,246361,184.21
+60,Jurassic Park,1993,127,8.1,889876,402.45
+61,The Exorcist,1973,122,8,368603,232.91
+62,The Pianist,2002,150,8.5,753247,32.57
+63,Goodfellas,1990,146,8.7,1048196,46.84
+64,The Deer Hunter,1978,183,8.1,317920,48.98
+65,All Quiet on the Western Front,1930,152,8.1,58093,3.27
+66,Bonnie and Clyde,1967,111,7.8,104752,\N
+67,The French Connection,1971,104,7.7,113298,15.63
+68,City Lights,1931,87,8.5,171953,0.02
+69,It Happened One Night,1934,105,8.1,96430,4.36
+70,A Place in the Sun,1951,122,7.8,20721,\N
+71,Midnight Cowboy,1969,113,7.8,103229,44.79
+72,Mr. Smith Goes to Washington,1939,129,8.1,109129,9.6
+73,Rain Man,1988,133,8,482164,178.8
+74,Annie Hall,1977,93,8,255035,39.2
+75,Fargo,1996,98,8.1,632090,24.61
+76,Giant,1956,201,7.6,34944,\N
+77,Shane,1953,118,7.6,37972,20
+78,The Grapes of Wrath,1940,129,8.1,86714,0.06
+79,The Green Mile,1999,189,8.6,1179670,136.8
+80,Close Encounters of the Third Kind,1977,138,7.6,188661,132.09
+81,Nashville,1975,160,7.7,24395,14.82
+82,Network,1976,121,8.1,148131,\N
+83,The Graduate,1967,106,8,257655,104.95
+84,American Graffiti,1973,110,7.4,83737,115
+85,Pulp Fiction,1994,154,8.9,1871659,107.93
+86,Terms of Endearment,1983,132,7.4,56512,108.42
+87,Good Will Hunting,1997,126,8.3,884168,138.43
+88,The African Queen,1951,105,7.8,72884,0.54
+89,Stagecoach,1939,96,7.9,44998,\N
+90,Mutiny on the Bounty,1935,132,7.7,21307,\N
+91,The Great Dictator,1940,125,8.4,207789,0.29
+92,Double Indemnity,1944,107,8.3,146783,5.72
+93,The Maltese Falcon,1941,100,8,151061,2.11
+94,Wuthering Heights,1939,104,7.6,16901,0.76
+95,Taxi Driver,1976,114,8.3,745272,28.26
+96,Rear Window,1954,112,8.5,454266,36.76
+97,The Third Man,1949,93,8.1,161967,0.45
+98,Rebel Without a Cause,1955,111,7.7,85254,\N
+99,North by Northwest,1959,136,8.3,305149,13.28
+100,Yankee Doodle Dandy,1942,126,7.7,14392,11.8

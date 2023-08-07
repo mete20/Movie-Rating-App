@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS movies(
+   MovieID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY 
+  ,Name    VARCHAR(68)
+  ,Year    INTEGER
+  ,Runtime INTEGER
+  ,Rating  NUMERIC(3,1)
+  ,Votes   INTEGER
+  ,Revenue NUMERIC(6,2) NULL
+);
+LOAD DATA INFILE '/var/lib/mysql-files/data/movies.csv' 
+INTO TABLE movies 
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
