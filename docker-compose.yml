@@ -6,9 +6,10 @@ services:
     platform: ${PLATFORM} #linux/arm64 linux/amd64
     restart: always
     volumes:
-      - ./mysql/conf.d:/etc/mysql/conf.d
-      - ./mysql/data/init.sql:/docker-entrypoint-initdb.d/init.sql
       - mysql-data:/var/lib/mysql
+      - ./mysql/data:/var/lib/mysql-files/data
+      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - ${MYSQL_PORT}:3306
     environment:

@@ -33,7 +33,8 @@ def get_movies(db: Session, skip: int = 0, limit: int = 200):
 
 
 def create_movie(db: Session, movie: schemas.MovieCreate):
-    db_movie = models.Movie(name = movie.name, year=movie.year)
+    db_movie = models.Movie(Name = movie.Name, Year=movie.Year, Runtime = movie.Runtime,
+                            Rating = movie.Rating, Votes = movie.Votes, Revenue = movie.Revenue)
     db.add(db_movie)
     db.commit()
     db.refresh(db_movie)
