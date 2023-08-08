@@ -11,7 +11,7 @@ def create_user(user_data):
         if response.status_code == 200:
             return response.json()
         else:
-            return {"error": "Failed to create user", "status_code": response.status_code}
+            return {"error": f"Failed to create user. Server Response: {response.text}", "status_code": response.status_code}
     except requests.RequestException as e:
         return {"error": str(e)}
 
@@ -27,7 +27,7 @@ def get_user_by_id(user_id):
 
 if __name__ == "__main__":
     # Sample usage
-    time.sleep(20)
-    new_user = {"name": "John Doe", "email": "john@example.com"}
+    #time.sleep(20)
+    new_user = {"email": "john@example.com", "password": "deneme"}
     print(create_user(new_user))
     print(get_user_by_id(1))
