@@ -30,6 +30,16 @@ services:
         - db
       env_file:
         - .env
+  
+  client:
+    build:
+      context: ./client
+    environment:
+      SERVER_URL: ${SERVER_URL}
+    depends_on:
+        - web
+   
+
 
 volumes:
   mysql-data:
