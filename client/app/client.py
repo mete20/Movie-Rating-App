@@ -1,9 +1,10 @@
-
 import requests
 import os
-import time
+import webbrowser
+
 # Configuration from environment variables
 SERVER_URL = os.environ.get("SERVER_URL", "http://localhost:8000")
+
 
 def create_user(user_data):
     try:
@@ -27,7 +28,6 @@ def get_user_by_id(user_id):
 
 if __name__ == "__main__":
     # Sample usage
-    #time.sleep(20)
     new_user = {"email": "john@example.com", "password": "deneme"}
     print(create_user(new_user))
     print(get_user_by_id(1))
