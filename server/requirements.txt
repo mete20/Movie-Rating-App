@@ -4,3 +4,4 @@ sqlalchemy
 pydantic
 mysqlclient
 alembic
+
