@@ -23,7 +23,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """This method reads the movies.csv file and fills the movie table.
-    In the Revenue column, null tuples are denoted as '\N' so the upgrade handles null values.
+    In the Revenue column, null tuples are denoted as N so the upgrade handles null values.
     """
     with open('db/movies.csv', 'r') as csv_file:
         conn = op.get_bind()
@@ -32,7 +32,7 @@ def upgrade() -> None:
 
         values_list = []
         for row in csv_reader:
-            if row['Revenue'] == '\\N':
+            if row['Revenue'] == r'\N':
                 row['Revenue'] = None
             else:
                 row['Revenue'] = float(row['Revenue'])
