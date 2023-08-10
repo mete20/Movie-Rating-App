@@ -28,6 +28,7 @@ def get_user_by_id(user_id):
 
 if __name__ == "__main__":
     # Sample usage
-    new_user = {"email": "john@example.com", "password": "deneme"}
-    print(create_user(new_user))
-    print(get_user_by_id(1))
+    #new_user = {"email": "john@example.com", "password": "deneme"}
+    #print(create_user(new_user))
+    #print(get_user_by_id(1))
+    print()

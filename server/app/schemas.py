@@ -7,10 +7,12 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+    role: str
 
 
 class User(UserBase):
     id: int
+    
     class Config:
         from_attributes = True
         
