@@ -1,3 +1,1 @@
-GRANT FILE ON *.* TO 'eren'@'%';
-FLUSH PRIVILEGES;
 
