@@ -3,4 +3,5 @@ uvicorn
 sqlalchemy
 pydantic
 mysqlclient
+alembic
 

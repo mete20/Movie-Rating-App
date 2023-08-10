@@ -6,11 +6,11 @@ Create Date: 2023-08-08 00:16:10.904081
 
 """
 from typing import Sequence, Union
-
 from alembic import op
 from sqlalchemy import insert, delete
 from app.models import Movie
 import csv
+
 
 
 
@@ -54,4 +54,3 @@ def downgrade() -> None:
             stmt = delete(Movie).where(Movie.MovieID == int(row['MovieID']))
             conn.execute(stmt)
     # ### end Alembic commands ###
-
