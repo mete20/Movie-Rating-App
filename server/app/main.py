@@ -7,7 +7,6 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 import secrets
 
 
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
