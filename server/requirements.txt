@@ -4,4 +4,6 @@ sqlalchemy
 pydantic
 mysqlclient
 alembic
-
+authlib
+itsdangerous
+httpx

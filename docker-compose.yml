@@ -25,6 +25,10 @@ services:
         - ./server:/app
       ports:
         - 8000:8000
+      environment:
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+        SECRET_KEY: ${SECRET_KEY}
       depends_on:
         - db
       env_file:
