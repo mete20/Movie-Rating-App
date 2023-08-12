@@ -7,3 +7,4 @@ alembic
 authlib
 itsdangerous
 httpx
+pyjwt
