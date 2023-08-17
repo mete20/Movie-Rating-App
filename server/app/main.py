@@ -1,10 +1,10 @@
+from .jwt import get_current_user_email
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 from typing import List, Annotated
 from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
-import secrets
 
 from app.auth import auth_app
 
@@ -12,9 +12,6 @@ app = FastAPI()
 
 app.mount('/auth', auth_app)
 
-@app.get('/')
-async def root():
-    return HTMLResponse('<body><a href="/auth/login">Log In</a></body>')
 
 @app.get('/token')
 async def token(request: Request):
@@ -87,7 +84,8 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/movies/", response_model=schemas.Movie)
 def create_movie(movie: schemas.MovieCreate,
-    db: Session = Depends(get_db)):
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user_email)):
     db_movie = crud.get_movie_by_name(db, name= movie.Name)
     if db_movie:
         raise HTTPException(
@@ -96,7 +94,7 @@ def create_movie(movie: schemas.MovieCreate,
             detail={
                 "error code:": 400,
                 "error description": "Movie already exist",
-                "message": f"Movie with ID: '{rating.movie_id}' created before.",
+                "message": f"Movie with ID: '{movie.movie_id}' created before.",
             },
         )
     return crud.create_movie(db=db, movie=movie)

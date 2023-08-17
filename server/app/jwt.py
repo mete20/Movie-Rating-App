@@ -9,7 +9,7 @@ from fastapi import status
 from fastapi.security import OAuth2PasswordBearer
 
 # Create a fake db:
-FAKE_DB = {'yakametehan78@gmail.com': {'name': 'Metehan Yaka'}}
+FAKE_DB = {'sgtfrost001@gmail.com': {'name': 'Mehmet Eren Kılıç'}}
 
 
 # Helper to read numbers using var envs
@@ -60,20 +60,24 @@ def create_token(email):
     return access_token
 
 
-def valid_email_from_db(email):
-    return email in FAKE_DB
+def is_admin(email):
+    domain = email.split('@')[1]
+    return domain == 'ku.edu.tr'
 
 
 async def get_current_user_email(token: str = Depends(oauth2_scheme)):
+    print(token)
     try:
         payload = jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM])
         email: str = payload.get('sub')
         if email is None:
+            print(1)
             raise CREDENTIALS_EXCEPTION
     except jwt.PyJWTError:
+        print(2)
         raise CREDENTIALS_EXCEPTION
-
-    if valid_email_from_db(email):
+    if is_admin(email):
         return email
-
-    raise CREDENTIALS_EXCEPTION
+    else:
+        print(3)
+        raise CREDENTIALS_EXCEPTION
