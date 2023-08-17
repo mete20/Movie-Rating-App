@@ -6,6 +6,7 @@ from authlib.integrations.starlette_client import OAuthError
 from fastapi import FastAPI
 from fastapi import Request
 from starlette.config import Config
+from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import JSONResponse
 from .config import Config as cf
@@ -24,9 +25,11 @@ if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
     raise BaseException('Missing env variables')
 
 # Set up OAuth
-config_data = {'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID, 'GOOGLE_CLIENT_SECRET': GOOGLE_CLIENT_SECRET}
-starlette_config = Config(environ=config_data)
-oauth = OAuth(starlette_config)
+
+config = Config('.env')
+oauth = OAuth(config)
+
+CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth.register(
     name='google',
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
@@ -41,23 +44,22 @@ oauth.register(
     client_kwargs={'scope': 'openid email profile'},
 )
 
-# Set up the middleware to read the request session
-SECRET_KEY = os.environ.get('SECRET_KEY') or None
-if SECRET_KEY is None:
-    raise 'Missing SECRET_KEY'
-auth_app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
-
-# Frontend URL:
-FRONTEND_URL = os.environ.get('FRONTEND_URL') or 'http://localhost:8000/token'
+@auth_app.route('/')
+async def homepage(request: Request):
+    user = request.session.get('user')
+    if user:
+        data = json.dumps(user)
+        return JSONResponse(data)
+    return JSONResponse({"user": "Not Found!"})
 
 
 @auth_app.route('/login')
 async def login(request: Request):
-    redirect_uri = FRONTEND_URL  # This creates the url for our /auth endpoint
+    redirect_uri = request.url_for('token')
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 
-@auth_app.route('/token')
+@auth_app.route('/token', name='token')
 async def auth(request: Request):
     try:
         access_token = await oauth.google.authorize_access_token(request)

@@ -7,35 +7,14 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
 from app.auth import auth_app
+from app.auth import get_current_user
 
 app = FastAPI()
 
+app.add_middleware(SessionMiddleware, secret_key="!secret")
+
+
 app.mount('/auth', auth_app)
-
-
-@app.get('/token')
-async def token(request: Request):
-    return HTMLResponse('''
-                <script>
-                function send(){
-                    var req = new XMLHttpRequest();
-                    req.onreadystatechange = function() {
-                        if (req.readyState === 4) {
-                            console.log(req.response);
-                            if (req.response["result"] === true) {
-                                window.localStorage.setItem('jwt', req.response["access_token"]);
-                            }
-                        }
-                    }
-                    req.withCredentials = true;
-                    req.responseType = 'json';
-                    req.open("get", "/auth/token?"+window.location.search.substr(1), true);
-                    req.send("");
-
-                }
-                </script>
-                <button onClick="send()">Get FastAPI JWT Token</button>
-            ''')
 
 # Dependency
 def get_db():
@@ -47,7 +26,7 @@ def get_db():
         
 
 @app.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(
@@ -156,7 +135,7 @@ def create_rating(rating: schemas.RatingCreate, db: Session = Depends(get_db)):
                 "message": f"User with ID: '{rating.user_id}' has voted the movie '{rating.movie_id}' before.",
             },
         )
-        return crud.create_rating(db, rating)
+    return crud.create_rating(db, rating)
 
 
 
