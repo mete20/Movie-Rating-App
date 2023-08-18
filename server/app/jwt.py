@@ -29,6 +29,7 @@ if API_SECRET_KEY is None:
     raise BaseException('Missing API_SECRET_KEY env var.')
 API_ALGORITHM = os.environ.get('API_ALGORITHM') or 'HS256'
 API_ACCESS_TOKEN_EXPIRE_MINUTES = cast_to_number('API_ACCESS_TOKEN_EXPIRE_MINUTES') or 15
+REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30
 
 # Token url (We should later create a token url that accepts just a user and a password to use swagger)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
@@ -68,16 +69,37 @@ def is_admin(email):
 async def get_current_user_email(token: str = Depends(oauth2_scheme)):
     print(token)
     try:
-        payload = jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM])
+        payload = jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM], options={"verify_signature": False})
         email: str = payload.get('sub')
         if email is None:
             print(1)
             raise CREDENTIALS_EXCEPTION
+    except Exception as e:
+        print(e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    '''
     except jwt.PyJWTError:
         print(2)
         raise CREDENTIALS_EXCEPTION
+    '''
     if is_admin(email):
+        print("admin", email)
         return email
     else:
+        print(email)
+        return email
         print(3)
-        raise CREDENTIALS_EXCEPTION
+    raise CREDENTIALS_EXCEPTION
+
+def create_refresh_token(email):
+    expires = timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    return create_access_token(data={'sub': email}, expires_delta=expires)
+
+def decode_token(token):
+    return jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM], options={"verify_signature": False})
+
+async def get_current_user_token(token: str = Depends(oauth2_scheme)):
+    _ = await get_current_user_email(token)
+    return token
+

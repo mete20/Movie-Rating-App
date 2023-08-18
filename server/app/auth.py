@@ -1,5 +1,6 @@
 from base64 import urlsafe_b64encode
 import os
+from datetime import datetime
 
 from authlib.integrations.starlette_client import OAuth
 from authlib.integrations.starlette_client import OAuthError
@@ -12,11 +13,11 @@ from starlette.responses import JSONResponse
 from .config import Config as cf
 from app.jwt import create_token
 from app.jwt import CREDENTIALS_EXCEPTION
-from app.jwt import is_admin
 from starlette.applications import Starlette
-
+from app.jwt import create_refresh_token
+from app.jwt import decode_token
 # Create the auth app
-auth_app = Starlette()
+auth_app = FastAPI()
 
 # OAuth settings
 GOOGLE_CLIENT_ID = cf.GOOGLE_CLIENT_ID
@@ -25,7 +26,7 @@ if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
     raise BaseException('Missing env variables')
 
 # Set up OAuth
-
+API_SECRET_KEY = os.environ.get('API_SECRET_KEY')
 config = Config('.env')
 oauth = OAuth(config)
 
@@ -36,28 +37,26 @@ oauth.register(
     id_token_signing_alg_values_supported=["HS256", "RS256"],
     jwks={
         "keys": [{
-            "kid": "AIzaSyCNmCAf8HqRyOvXgRE4ol5_9W4v90G_vBE",
+            "kid": API_SECRET_KEY,
             "kty": "oct",
             "alg": "RS256",
         }]
     },
     client_kwargs={'scope': 'openid email profile'},
 )
-
-@auth_app.route('/')
-async def homepage(request: Request):
-    user = request.session.get('user')
-    if user:
-        data = json.dumps(user)
-        return JSONResponse(data)
-    return JSONResponse({"user": "Not Found!"})
+SECRET_KEY = os.environ.get('SECRET_KEY')
+FRONTEND_URL = os.environ.get('FRONTEND_URL')
+auth_app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 
 @auth_app.route('/login')
 async def login(request: Request):
-    redirect_uri = request.url_for('token')
+    redirect_uri = FRONTEND_URL
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
+async def logout(request: Request):
+    request.session.clear()
+    return JSONResponse({'result': True, 'message': 'Logged out successfully'})
 
 @auth_app.route('/token', name='token')
 async def auth(request: Request):
@@ -66,6 +65,28 @@ async def auth(request: Request):
         userinfo = access_token['userinfo']
     except OAuthError:
         raise CREDENTIALS_EXCEPTION
-    return JSONResponse({'result': True, 'access_token': create_token(userinfo['email'])})
+    return JSONResponse({
+            'result': True,
+            'access_token': create_token(userinfo['email']),
+            'refresh_token': create_refresh_token(userinfo['email']),
+        })
    
-        
+@auth_app.post('/refresh')
+async def refresh(request: Request):
+    try:
+        # Only accept post requests
+        if request.method == 'POST':
+            form = await request.json()
+            if form.get('grant_type') == 'refresh_token':
+                token = form.get('refresh_token')
+                payload = decode_token(token)
+                # Check if token is not expired
+                # if datetime.utcfromtimestamp(payload.get('exp')) > datetime.utcnow():
+                email = payload.get('sub')
+                    # Validate email
+                    # Create and return token
+                return JSONResponse({'result': True, 'access_token': create_token(email)})
+
+    except Exception:
+        raise CREDENTIALS_EXCEPTION
+    raise CREDENTIALS_EXCEPTION       

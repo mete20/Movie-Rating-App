@@ -8,3 +8,5 @@ authlib
 itsdangerous
 httpx
 pyjwt
+pyjwt[crypto]
+cryptography
