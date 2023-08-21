@@ -1,15 +1,13 @@
 import os
 from datetime import datetime
 from datetime import timedelta
+from typing import Annotated
 
 import jwt
 from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import status
 from fastapi.security import OAuth2PasswordBearer
-
-# Create a fake db:
-FAKE_DB = {'sgtfrost001@gmail.com': {'name': 'Mehmet Eren Kılıç'}}
 
 
 # Helper to read numbers using var envs
@@ -32,8 +30,9 @@ API_ACCESS_TOKEN_EXPIRE_MINUTES = cast_to_number('API_ACCESS_TOKEN_EXPIRE_MINUTE
 REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30
 
 # Token url (We should later create a token url that accepts just a user and a password to use swagger)
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
-
+#oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+oauth2_scheme = HTTPBearer()
 # Error
 CREDENTIALS_EXCEPTION = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -66,38 +65,28 @@ def is_admin(email):
     return domain == 'ku.edu.tr'
 
 
-async def get_current_user_email(token: str = Depends(oauth2_scheme)):
-    print(token)
+async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(oauth2_scheme)):
     try:
-        payload = jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM], options={"verify_signature": False})
+        payload = jwt.decode(token.credentials, API_SECRET_KEY, algorithms=[API_ALGORITHM])
         email: str = payload.get('sub')
         if email is None:
-            print(1)
             raise CREDENTIALS_EXCEPTION
     except Exception as e:
-        print(e)
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    '''
-    except jwt.PyJWTError:
-        print(2)
-        raise CREDENTIALS_EXCEPTION
-    '''
     if is_admin(email):
         print("admin", email)
         return email
     else:
-        print(email)
+        print("email", email)
         return email
-        print(3)
-    raise CREDENTIALS_EXCEPTION
 
 def create_refresh_token(email):
     expires = timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
     return create_access_token(data={'sub': email}, expires_delta=expires)
 
 def decode_token(token):
-    return jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM], options={"verify_signature": False})
+    return jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM])
 
 async def get_current_user_token(token: str = Depends(oauth2_scheme)):
     _ = await get_current_user_email(token)

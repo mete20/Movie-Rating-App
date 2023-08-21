@@ -14,7 +14,6 @@ from app.jwt import get_current_user_token
 app = FastAPI()
 app.mount('/auth', auth_app)
 app.mount('/api', api_app)
-
 # Dependency
 def get_db():
     db = SessionLocal()
