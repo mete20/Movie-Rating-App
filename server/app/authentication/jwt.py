@@ -2,7 +2,6 @@ import os
 from datetime import datetime
 from datetime import timedelta
 from typing import Annotated
-
 import jwt
 from fastapi import Depends
 from fastapi import HTTPException

@@ -8,7 +8,7 @@ Create Date: 2023-08-08 00:16:10.904081
 from typing import Sequence, Union
 from alembic import op
 from sqlalchemy import insert, delete
-from app.models import Movie
+from app.models.model_movie import Movie
 import csv
 
 
@@ -25,7 +25,7 @@ def upgrade() -> None:
     """This method reads the movies.csv file and fills the movie table.
     In the Revenue column, null tuples are denoted as N so the upgrade handles null values.
     """
-    with open('db/movies.csv', 'r') as csv_file:
+    with open('app/db/movies.csv', 'r') as csv_file:
         conn = op.get_bind()
 
         csv_reader = csv.DictReader(csv_file)

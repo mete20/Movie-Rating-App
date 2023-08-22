@@ -1,21 +1,20 @@
 from base64 import urlsafe_b64encode
 import os
 from datetime import datetime
-
-from authlib.integrations.starlette_client import OAuth
-from authlib.integrations.starlette_client import OAuthError
 from fastapi import FastAPI
 from fastapi import Request
+from starlette.applications import Starlette
 from starlette.config import Config
 from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import JSONResponse
-from .config import Config as cf
-from app.jwt import create_token
-from app.jwt import CREDENTIALS_EXCEPTION
-from starlette.applications import Starlette
-from app.jwt import create_refresh_token
-from app.jwt import decode_token
+from authlib.integrations.starlette_client import OAuth
+from authlib.integrations.starlette_client import OAuthError
+from app.config import Config as cf
+from app.authentication.jwt import create_token
+from app.authentication.jwt import CREDENTIALS_EXCEPTION
+from app.authentication.jwt import create_refresh_token
+from app.authentication.jwt import decode_token
 # Create the auth app
 auth_app = FastAPI()
 
