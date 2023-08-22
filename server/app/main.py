@@ -1,17 +1,19 @@
-from fastapi import Depends, FastAPI, HTTPException, Request, status
-from sqlalchemy.orm import Session
+from .db import add_blacklist_token
+from .jwt import get_current_user_email
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 from typing import List, Annotated
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-import secrets
-
-
-
+from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi.responses import HTMLResponse
+from sqlalchemy.orm import Session
+from app.auth import auth_app
+from app.api import api_app
+from starlette.responses import JSONResponse
+from app.jwt import CREDENTIALS_EXCEPTION
+from app.jwt import get_current_user_token
 app = FastAPI()
-
-security = HTTPBasic()
-
+app.mount('/auth', auth_app)
+app.mount('/api', api_app)
 # Dependency
 def get_db():
     db = SessionLocal()
@@ -19,55 +21,88 @@ def get_db():
         yield db
     finally:
         db.close()
-        
+@app.get('/')
+async def root():
+    return HTMLResponse('<body><a href="/auth/login">Log In</a></body>')
+@app.get('/logout')
+def logout(token: str = Depends(get_current_user_token)):
+    return JSONResponse({'result': True})
+@app.get('/token')
+async def token(request: Request):
+    return HTMLResponse('''
+                <script>
+                function send(){
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = function() {
+                        if (req.readyState === 4) {
+                            console.log(req.response);
+                            if (req.response["result"] === true) {
+                                window.localStorage.setItem('jwt', req.response["access_token"]);
+                                window.localStorage.setItem('refresh', req.response["refresh_token"]);
+                            }
+                        }
+                    }
+                    req.withCredentials = true;
+                    req.responseType = 'json';
+                    req.open("get", "/auth/token?"+window.location.search.substr(1), true);
+                    req.send("");
 
-def get_current_email(credentials: Annotated[HTTPBasicCredentials, Depends(security)], db: Session = Depends(get_db)):  
-    current_email= credentials.username
-    user = crud.get_user_by_email(db, current_email)
-    if user:
-        current_password_bytes = credentials.password.encode("utf8")
-        correct_password_bytes = bytes(user.hashed_password,"utf8")
-        is_correct_password = secrets.compare_digest(current_password_bytes, correct_password_bytes)
-        print(current_password_bytes)
-        print(correct_password_bytes)
-        if not (is_correct_password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
-                headers={"WWW-Authenticate": "Basic"},
-            )
-    else:
-        raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
-                headers={"WWW-Authenticate": "Basic"},
-            )
-    return credentials.username
+                }
+                </script>
+                <button onClick="send()">Get FastAPI JWT Token</button>
 
-def get_current_user_role(email: str, db: Session = Depends(get_db)) -> str:
-    user = crud.get_user_by_email(db, email)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    return user.role
+                <button onClick='fetch("http://localhost:8000/api/").then(
+                    (r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Unprotected API
+                </button>
+                <button onClick='fetch("http://localhost:8000/api/protected").then(
+                    (r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Protected API without JWT
+                </button>
+                <button onClick='fetch("http://localhost:8000/api/protected",{
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                }).then((r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Protected API wit JWT
+                </button>
 
-def ensure_admin(email: str = Depends(get_current_email), role: str = Depends(get_current_user_role)):
-    if not role.__eq__("admin"):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Only admin users can perform this action"
-        )
-    return email
+                <button onClick='fetch("http://localhost:8000/logout",{
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                }).then((r)=>r.json()).then((msg)=>{
+                    console.log(msg);
+                    if (msg["result"] === true) {
+                        window.localStorage.removeItem("jwt");
+                    }
+                    });'>
+                Logout
+                </button>
 
-@app.get("/users/me")
-def read_current_user(email: Annotated[str, Depends(get_current_email)]):
-    return {"email": email}
+                <button onClick='fetch("http://localhost:8000/auth/refresh",{
+                    method: "POST",
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                    body:JSON.stringify({
+                        grant_type:\"refresh_token\",
+                        refresh_token:window.localStorage.getItem(\"refresh\")
+                        })
+                }).then((r)=>r.json()).then((msg)=>{
+                    console.log(msg);
+                    if (msg["result"] === true) {
+                        window.localStorage.setItem("jwt", msg["access_token"]);
+                    }
+                    });'>
+                Refresh
+                </button>
 
-
+            ''')
+    
+    
 @app.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user_email)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(
@@ -104,8 +139,8 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post("/movies/", response_model=schemas.Movie)
 def create_movie(movie: schemas.MovieCreate,
-    email: str = Depends(ensure_admin),
-    db: Session = Depends(get_db)):
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user_email)):
     db_movie = crud.get_movie_by_name(db, name= movie.Name)
     if db_movie:
         raise HTTPException(
@@ -114,7 +149,7 @@ def create_movie(movie: schemas.MovieCreate,
             detail={
                 "error code:": 400,
                 "error description": "Movie already exist",
-                "message": f"Movie with ID: '{rating.movie_id}' created before.",
+                "message": f"Movie with ID: '{movie.movie_id}' created before.",
             },
         )
     return crud.create_movie(db=db, movie=movie)
@@ -176,7 +211,7 @@ def create_rating(rating: schemas.RatingCreate, db: Session = Depends(get_db)):
                 "message": f"User with ID: '{rating.user_id}' has voted the movie '{rating.movie_id}' before.",
             },
         )
-        return crud.create_rating(db, rating)
+    return crud.create_rating(db, rating)
 
 
 
