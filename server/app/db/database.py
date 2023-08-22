@@ -13,3 +13,11 @@ try:
 except Exception as e:
     print(f"Unexpected error: {e}")
     
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+    
