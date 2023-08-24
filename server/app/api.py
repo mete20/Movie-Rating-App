@@ -1,7 +1,7 @@
 from fastapi import Depends
 from fastapi import FastAPI
 
-from .jwt import get_current_user_email
+from .authentication.jwt import get_current_user_email
 
 api_app = FastAPI()
 

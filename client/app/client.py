@@ -3,8 +3,8 @@ import os
 import webbrowser
 
 # Configuration from environment variables
-SERVER_URL = os.environ.get("SERVER_URL", "http://localhost:8000")
-
+#SERVER_URL = os.environ.get("SERVER_URL", "http://localhost:8000")
+SERVER_URL = "http://localhost:8000"
 
 def create_user(user_data):
     try:
