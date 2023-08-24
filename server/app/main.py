@@ -24,9 +24,11 @@ app.include_router(router_rating.router)
 @app.get('/')
 async def root():
     return HTMLResponse('<body><a href="/auth/login">Log In</a></body>')
+
 @app.get('/logout')
 def logout(token: str = Depends(get_current_user_token)):
     return JSONResponse({'result': True})
+
 @app.get('/token')
 async def token(request: Request):
     return HTMLResponse('''
@@ -46,7 +48,6 @@ async def token(request: Request):
                     req.responseType = 'json';
                     req.open("get", "/auth/token?"+window.location.search.substr(1), true);
                     req.send("");
-
                 }
                 </script>
                 <button onClick="send()">Get FastAPI JWT Token</button>

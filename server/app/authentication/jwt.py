@@ -6,8 +6,9 @@ import jwt
 from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+http_bearer = HTTPBearer()
 
 # Helper to read numbers using var envs
 def cast_to_number(id):
@@ -28,10 +29,7 @@ API_ALGORITHM = os.environ.get('API_ALGORITHM') or 'HS256'
 API_ACCESS_TOKEN_EXPIRE_MINUTES = cast_to_number('API_ACCESS_TOKEN_EXPIRE_MINUTES') or 15
 REFRESH_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30
 
-# Token url (We should later create a token url that accepts just a user and a password to use swagger)
-#oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-oauth2_scheme = HTTPBearer()
+
 # Error
 CREDENTIALS_EXCEPTION = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
@@ -64,7 +62,7 @@ def is_admin(email):
     return domain == 'ku.edu.tr'
 
 
-async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(oauth2_scheme)):
+async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)):
     try:
         payload = jwt.decode(token.credentials, API_SECRET_KEY, algorithms=[API_ALGORITHM])
         email: str = payload.get('sub')
@@ -73,12 +71,8 @@ async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredenti
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    if is_admin(email):
-        print("admin", email)
-        return email
-    else:
-        print("email", email)
-        return email
+    return email
+
 
 def create_refresh_token(email):
     expires = timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
@@ -87,7 +81,7 @@ def create_refresh_token(email):
 def decode_token(token):
     return jwt.decode(token, API_SECRET_KEY, algorithms=[API_ALGORITHM])
 
-async def get_current_user_token(token: str = Depends(oauth2_scheme)):
+async def get_current_user_token(token: str = Depends(http_bearer)):
     _ = await get_current_user_email(token)
     return token
 
