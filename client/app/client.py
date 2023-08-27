@@ -1,34 +1,96 @@
-import requests
-import os
-import webbrowser
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
-# Configuration from environment variables
-#SERVER_URL = os.environ.get("SERVER_URL", "http://localhost:8000")
-SERVER_URL = "http://localhost:8000"
+app = FastAPI()
 
-def create_user(user_data):
-    try:
-        response = requests.post(f"{SERVER_URL}/users/", json=user_data)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": f"Failed to create user. Server Response: {response.text}", "status_code": response.status_code}
-    except requests.RequestException as e:
-        return {"error": str(e)}
+@app.get("/")
+async def root():
+    return HTMLResponse('<body><a href="http://localhost:8000/auth/login">Log In</a></body>')
 
-def get_user_by_id(user_id):
-    try:
-        response = requests.get(f"{SERVER_URL}/users/{user_id}")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return {"error": f"Failed to fetch user with ID {user_id}", "status_code": response.status_code}
-    except requests.RequestException as e:
-        return {"error": str(e)}
+@app.get("/token")
+async def token():
+    return HTMLResponse('''
+                <script>
+                function send(){
+                    var req = new XMLHttpRequest();
+                    req.onreadystatechange = function() {
+                        if (req.readyState === 4) {
+                            console.log(req.response);
+                            if (req.response["result"] === true) {
+                                window.localStorage.setItem('jwt', req.response["access_token"]);
+                                window.localStorage.setItem('refresh', req.response["refresh_token"]);
+                            }
+                        }
+                    }
+                    req.withCredentials = true;
+                    req.responseType = 'json';
+                    req.open("get", "http://localhost:8000/auth/token?"+window.location.search.substr(1), true);
+                    req.send("");
 
-if __name__ == "__main__":
-    # Sample usage
-    #new_user = {"email": "john@example.com", "password": "deneme"}
-    #print(create_user(new_user))
-    #print(get_user_by_id(1))
-    print()
+                }
+                </script>
+                <button onClick="send()">Get FastAPI JWT Token</button>
+
+                <button onClick='fetch("http://localhost:8000/api/").then(
+                    (r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Unprotected API
+                </button>
+                
+                <button onClick='fetch("http://localhost:8000/movies/").then(
+                    (r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Get Movies
+                </button>
+                
+                <button onClick='fetch("http://localhost:8000/api/protected").then(
+                    (r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Protected API without JWT
+                </button>
+                
+                <button onClick='fetch("http://localhost:8000/api/protected",{
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                }).then((r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Call Protected API wit JWT
+                </button>
+                
+                <button onClick='fetch("http://localhost:8000/users",{
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                }).then((r)=>r.json()).then((msg)=>{console.log(msg)});'>
+                Get Users
+                </button>
+
+                <button onClick='fetch("http://localhost:8000/logout",{
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                }).then((r)=>r.json()).then((msg)=>{
+                    console.log(msg);
+                    if (msg["result"] === true) {
+                        window.localStorage.removeItem("jwt");
+                    }
+                    });'>
+                Logout
+                </button>
+
+                <button onClick='fetch("http://localhost:8000/auth/refresh",{
+                    method: "POST",
+                    headers:{
+                        "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                    },
+                    body:JSON.stringify({
+                        grant_type:\"refresh_token\",
+                        refresh_token:window.localStorage.getItem(\"refresh\")
+                        })
+                }).then((r)=>r.json()).then((msg)=>{
+                    console.log(msg);
+                    if (msg["result"] === true) {
+                        window.localStorage.setItem("jwt", msg["access_token"]);
+                    }
+                    });'>
+                Refresh
+                </button>
+
+            ''')
