@@ -1,25 +1,16 @@
-import os
 from datetime import datetime
 from fastapi import FastAPI
-from fastapi import Request
 from starlette.config import Config
 from starlette.requests import Request
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.responses import JSONResponse
 from authlib.integrations.starlette_client import OAuth
-from authlib.integrations.starlette_client import OAuthError
 from app.config import Config as cf
-from app.authentication.jwt import create_token
-from app.authentication.jwt import CREDENTIALS_EXCEPTION
-from app.authentication.jwt import create_refresh_token
-from app.authentication.jwt import decode_token
+from app.authentication.jwt import create_token, CREDENTIALS_EXCEPTION, create_refresh_token, decode_token
 from app.crud.crud_user import get_user_by_email, create_user
 from app.schemas.schema_user import UserCreate
 from .jwt import is_admin
 from app.db.database import get_db
-
-# Create the auth app
-auth_app = FastAPI()
 
 # OAuth settings
 GOOGLE_CLIENT_ID = cf.GOOGLE_CLIENT_ID
@@ -27,33 +18,24 @@ GOOGLE_CLIENT_SECRET = cf.GOOGLE_CLIENT_SECRET
 if GOOGLE_CLIENT_ID is None or GOOGLE_CLIENT_SECRET is None:
     raise BaseException('Missing env variables')
 
+# Create the auth app
+auth_app = FastAPI()
+
 # Set up OAuth
-API_SECRET_KEY = os.environ.get('API_SECRET_KEY')
-config = Config('.env')
+config = Config()
 oauth = OAuth(config)
 
-CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
 oauth.register(
     name='google',
     server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    id_token_signing_alg_values_supported=["HS256", "RS256"],
-    jwks={
-        "keys": [{
-            "kid": API_SECRET_KEY,
-            "kty": "oct",
-            "alg": "RS256",
-        }]
-    },
     client_kwargs={'scope': 'openid email profile'},
 )
-SECRET_KEY = os.environ.get('SECRET_KEY')
-FRONTEND_URL = os.environ.get('FRONTEND_URL')
-auth_app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
-    
+
+auth_app.add_middleware(SessionMiddleware, secret_key=cf.SECRET_KEY)    
 
 @auth_app.route('/login')
 async def login(request: Request):
-    redirect_uri = FRONTEND_URL
+    redirect_uri = cf.FRONTEND_URL
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 async def logout(request: Request):

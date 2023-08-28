@@ -61,6 +61,24 @@ def is_admin(email):
     domain = email.split('@')[1]
     return domain == 'ku.edu.tr'
 
+async def is_admin_dep(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)):
+    email = await get_current_user_email(token)
+    try:
+        domain = email.split('@')[1]
+    except IndexError as e:
+        raise HTTPException(
+            status_code=422,
+            
+            detail="Incorrect email input. {e}"
+        )
+    if (domain == 'ku.edu.tr'):
+        return True
+    else:
+        raise HTTPException(
+            status_code=403,
+            detail="You don't have the necessary permissions."
+        )
+
 
 async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)):
     try:

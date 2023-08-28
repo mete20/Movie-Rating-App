@@ -8,7 +8,11 @@ class Config:
     password = os.environ['MYSQL_PASSWORD']
     host = os.environ['MYSQL_HOST'] 
     database = os.environ['MYSQL_DATABASE']
+    DATABASE_URL = f"mysql://{user}:{password}@{host}/{database}"
+    
+    API_SECRET_KEY = os.environ['API_SECRET_KEY']
+    SECRET_KEY = os.environ['SECRET_KEY']
+    FRONTEND_URL = os.environ['FRONTEND_URL']
+    
     GOOGLE_CLIENT_ID= os.environ['GOOGLE_CLIENT_ID']
     GOOGLE_CLIENT_SECRET= os.environ['GOOGLE_CLIENT_SECRET']
-    
-    DATABASE_URL = f"mysql://{user}:{password}@{host}/{database}"
