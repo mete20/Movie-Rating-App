@@ -4,7 +4,7 @@ from app.crud import crud_user
 from app.schemas import schema_user
 from app.db.database import SessionLocal
 from app.db.database import get_db
-from app.authentication.jwt import get_current_user_email
+from app.authentication.jwt import get_current_user_email, is_admin_dep
 from typing import List
 
 router = APIRouter(
@@ -15,7 +15,8 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=schema_user.User)
-def create_user(user: schema_user.UserCreate, db: Session = Depends(get_db)):
+def create_user(user: schema_user.UserCreate, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)):
+    print(user)
     db_user = crud_user.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(

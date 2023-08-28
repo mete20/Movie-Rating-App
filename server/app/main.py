@@ -1,16 +1,9 @@
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import HTMLResponse
 from starlette.responses import JSONResponse
-from sqlalchemy.orm import Session
-from .authentication.jwt import CREDENTIALS_EXCEPTION
 from .authentication.jwt import get_current_user_token
-from .authentication.jwt import get_current_user_email
 from .authentication.auth import auth_app
 from app.api import api_app
-from .crud import crud_movie, crud_rating, crud_user
-from .schemas import schema_movie, schema_rating, schema_user
-from .db.database import SessionLocal
-from typing import List
 from app.routers import router_user, router_movie, router_rating 
 
 app = FastAPI()
@@ -24,9 +17,11 @@ app.include_router(router_rating.router)
 @app.get('/')
 async def root():
     return HTMLResponse('<body><a href="/auth/login">Log In</a></body>')
+
 @app.get('/logout')
 def logout(token: str = Depends(get_current_user_token)):
     return JSONResponse({'result': True})
+
 @app.get('/token')
 async def token(request: Request):
     return HTMLResponse('''
@@ -46,7 +41,6 @@ async def token(request: Request):
                     req.responseType = 'json';
                     req.open("get", "/auth/token?"+window.location.search.substr(1), true);
                     req.send("");
-
                 }
                 </script>
                 <button onClick="send()">Get FastAPI JWT Token</button>

@@ -23,7 +23,7 @@ def create_movie(movie: schema_movie.MovieCreate, db: Session = Depends(get_db),
             detail={
                 "error code:": 400,
                 "error description": "Movie already exist",
-                "message": f"Movie with ID: '{movie.movie_id}' created before.",
+                "message": f"Movie with Name: '{movie.Name}' created before.",
             },
         )
     return crud_movie.create_movie(db=db, movie=movie)
