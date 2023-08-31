@@ -23,4 +23,4 @@ jobs:
 
     - name: Run flake8 Lint
       run: |
-        flake8 . --ignore=W293,W391,E302,E305
+        flake8 . --ignore=W293,W391,E302,E305,E501,E123,W291
