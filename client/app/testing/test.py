@@ -14,7 +14,7 @@ class TestMockClient(unittest.TestCase):
         
     def test_get_movies(self):        
         # Use token to get movies
-        movies =  main.get_movies(self.token)
+        movies = main.get_movies(self.token)
         # Assert that the response is a list.
         self.assertIsInstance(movies, list, "Expected movies to be a list.")
     

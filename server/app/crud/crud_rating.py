@@ -16,7 +16,7 @@ def create_rating(db: Session, rating: schema_rating.RatingCreate):
 def update_movie_rating(db: Session, movie_id: int, rate: int):
     movie = get_movie(db, movie_id)
     movie_rate = movie.Rating
-    movie_votes= movie.Votes
+    movie_votes = movie.Votes
     total_rating = (movie_rate * movie_votes) + rate
     new_rating = total_rating / (movie_votes + 1)
     movie.Rating = new_rating

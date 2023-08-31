@@ -70,10 +70,10 @@ async def auth(request: Request):
         print(e)
         raise CREDENTIALS_EXCEPTION
     return JSONResponse({
-            'result': True,
-            'access_token': create_token(user_email),
-            'refresh_token': create_refresh_token(user_email),
-            })
+        'result': True,
+        'access_token': create_token(user_email),
+        'refresh_token': create_refresh_token(user_email),
+        })
   
    
 @auth_app.post('/refresh')
