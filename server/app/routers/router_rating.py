@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.crud import crud_rating, crud_user, crud_movie
 from app.schemas import schema_rating
-from app.db.database import SessionLocal
 from app.db.database import get_db
 from app.authentication.jwt import get_current_user_email
 
@@ -14,7 +13,9 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=schema_rating.Rating)
-def create_rating(rating: schema_rating.RatingCreate, db: Session = Depends(get_db)):
+def create_rating(
+    rating: schema_rating.RatingCreate, db: Session = Depends(get_db)
+    ):
     db_user = crud_user.get_user(db, user_id = rating.user_id)
     db_movie = crud_movie.get_movie(db, rating.movie_id)
 

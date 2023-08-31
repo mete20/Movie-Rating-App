@@ -27,7 +27,8 @@ oauth = OAuth(config)
 
 oauth.register(
     name='google',
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
+    server_metadata_url=
+    'https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid email profile'},
 )
 
@@ -38,9 +39,13 @@ async def login(request: Request):
     redirect_uri = cf.FRONTEND_URL
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
+
 async def logout(request: Request):
     request.session.clear()
-    return JSONResponse({'result': True, 'message': 'Logged out successfully'})
+    return JSONResponse({
+        'result': True, 'message': 'Logged out successfully'
+        })
+
 
 @auth_app.route('/token', name='token')
 async def auth(request: Request):
@@ -69,6 +74,7 @@ async def auth(request: Request):
             'access_token': create_token(user_email),
             'refresh_token': create_refresh_token(user_email),
         })
+  
    
 @auth_app.post('/refresh')
 async def refresh(request: Request):
@@ -84,7 +90,9 @@ async def refresh(request: Request):
                     email = payload.get('sub')
                     # Validate email
                     # Create and return token
-                    return JSONResponse({'result': True, 'access_token': create_token(email)})
+                    return JSONResponse({
+                        'result': True, 'access_token': create_token(email)
+                        })
 
     except Exception:
         raise CREDENTIALS_EXCEPTION

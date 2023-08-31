@@ -48,7 +48,9 @@ def is_admin(email):
     domain = email.split('@')[1]
     return domain == 'ku.edu.tr'
 
-async def is_admin_dep(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)):
+async def is_admin_dep(
+    token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)
+    ):
     email = await get_current_user_email(token)
     try:
         domain = email.split('@')[1]
@@ -56,7 +58,7 @@ async def is_admin_dep(token: Annotated[str, HTTPAuthorizationCredentials] = Dep
         raise HTTPException(
             status_code=422,
             
-            detail="Incorrect email input. {e}"
+            detail=f"Incorrect email input. {e}"
         )
     if (domain == 'ku.edu.tr'):
         return True
@@ -67,7 +69,9 @@ async def is_admin_dep(token: Annotated[str, HTTPAuthorizationCredentials] = Dep
         )
 
 
-async def get_current_user_email(token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)):
+async def get_current_user_email(
+    token: Annotated[str, HTTPAuthorizationCredentials] = Depends(http_bearer)
+    ):
     try:
         payload = jwt.decode(token.credentials, Config.API_SECRET_KEY, algorithms=[Config.API_ALGORITHM])
         email: str = payload.get('sub')

@@ -3,6 +3,7 @@ import main
 
 class TestMockClient(unittest.TestCase):
     
+    
     def setUp(self):
         self.token = main.mock_authenticate()
     
@@ -57,21 +58,24 @@ class TestMockClient(unittest.TestCase):
 
         # Assert that the movie was successfully deleted
         self.assertEqual(deleted_movie["Name"], movie["Name"], "Failed to delete movie.")
+       
               
     def test_get_specific_movie(self):
         # Use token to get a specific movie by its ID
         movie_id = 1
-        movie =  main.get_movie_by_id(self.token, movie_id)
+        movie = main.get_movie_by_id(self.token, movie_id)
         
         # Assert that we got a movie
         self.assertIsNotNone(movie, f"Failed to retrieve movie with ID: {movie_id}.")
+       
         
     def test_get_invalid_movie(self):
         # Try getting a movie with an invalid ID
-        movie_id = 9999  # Assuming no movie with this ID exists
+        movie_id = 9999 # Assuming no movie with this ID exists
         with self.assertRaises(Exception) as context:
              main.get_movie_by_id(self.token, movie_id)
         self.assertIn("404 Client Error: Not Found for url", str(context.exception), f"Expected movie with ID: {movie_id} to not exist.")
+      
         
 if __name__ == "__main__":
     unittest.main()

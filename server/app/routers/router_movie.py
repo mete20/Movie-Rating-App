@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.crud import crud_movie
 from app.schemas import schema_movie
 from app.db.database import get_db
 from typing import List
-from app.authentication.jwt import get_current_user_email, is_admin_dep
+from app.authentication.jwt import is_admin_dep
 
 router = APIRouter(
     prefix="/movies",
     tags=["movies"],
     responses={404: {"description": "Not found"}},
 )
+
 
 @router.post("/", response_model=schema_movie.Movie)
 def create_movie(movie: schema_movie.MovieCreate, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)):

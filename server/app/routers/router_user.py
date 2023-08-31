@@ -15,7 +15,9 @@ router = APIRouter(
 )
 
 @router.post("/", response_model=schema_user.User)
-def create_user(user: schema_user.UserCreate, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)):
+def create_user(
+    user: schema_user.UserCreate, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)
+    ):
     print(user)
     db_user = crud_user.get_user_by_email(db, email=user.email)
     if db_user:
@@ -49,7 +51,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 @router.get("/details/")
-async def get_user_details(current_email: str = Depends(get_current_user_email), db: Session = Depends(get_db)):
+async def get_user_details(
+    current_email: str = Depends(get_current_user_email), db: Session = Depends(get_db)
+    ):
     user = crud_user.get_user_by_email(db, current_email)
     if user is not None:
         return {"email": user.email, "user_id": user.id, "role": user.role}  # Add other fields as needed
