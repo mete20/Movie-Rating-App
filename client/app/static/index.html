@@ -173,6 +173,7 @@
                 let cell4 = row.insertCell(3);
                 let cell5 = row.insertCell(4);
                 let cell6 = row.insertCell(5);
+                let cell7 = row.insertCell(6);
 
                 cell1.innerHTML = movie.Name;
                 cell2.innerHTML = movie.Year;
@@ -180,9 +181,68 @@
                 cell4.innerHTML = movie.Rating;
                 cell5.innerHTML = movie.Votes;
                 cell6.innerHTML = movie.Revenue;
+                cell7.innerHTML = generateRatingDropdown(movie.MovieID);
             });
         });
     }
+
+    function getUserDetails() {
+        return new Promise((resolve, reject) => {
+            fetch("http://localhost:8000/users/details/", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.error("Error fetching user details:", error);
+                reject(error);
+            });
+        });
+    }
+    
+    
+    
+    function generateRatingDropdown(movieId) {
+        var dropdown = '<select onchange="submitRatingWithUser(this, ' + movieId + ')">';
+        for (var i = 1; i <= 10; i++) {
+            dropdown += '<option value="' + i + '">' + i + '</option>';
+        }
+        dropdown += '</select>';
+        return dropdown;
+    }
+    
+    
+    function submitRatingWithUser(selectElement, movieId) {
+        getUserDetails().then(userDetails => {
+            var rating = selectElement.value;
+            var userId = userDetails.user_id;  // Extract the userId from userDetails
+    
+            fetch("http://localhost:8000/ratings/", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + window.localStorage.getItem("jwt"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "user_id": userId,  // Send the userId
+                    "movie_id": movieId,
+                    "rating": rating
+                })
+            })
+            .then((r) => r.json())
+            .then((msg) => { console.log(msg); });
+    
+        }).catch(error => {
+            console.error("Failed to submit rating:", error);
+        });
+    }
+    
+    
 </script>
 
 </body>

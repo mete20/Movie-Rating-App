@@ -47,3 +47,12 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
             },
         )
     return db_user
+
+@router.get("/details/")
+async def get_user_details(current_email: str = Depends(get_current_user_email), db: Session = Depends(get_db)):
+    user = crud_user.get_user_by_email(db, current_email)
+    if user is not None:
+        return {"email": user.email, "user_id": user.id, "role": user.role}  # Add other fields as needed
+    else:
+        print("Error is here")
+        raise HTTPException(status_code=404, detail="User not found")
