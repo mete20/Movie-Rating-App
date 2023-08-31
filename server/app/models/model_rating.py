@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 
+
 class Rating(Base):
     __tablename__ = "rating"
     id = Column(Integer, primary_key=True, index=True)

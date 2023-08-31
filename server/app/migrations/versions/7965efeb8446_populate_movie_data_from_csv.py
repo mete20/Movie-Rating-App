@@ -11,9 +11,6 @@ from sqlalchemy import insert, delete
 from app.models.model_movie import Movie
 import csv
 
-
-
-
 # revision identifiers, used by Alembic.
 revision: str = '7965efeb8446'
 down_revision: Union[str, None] = '6f0f19c6d605'

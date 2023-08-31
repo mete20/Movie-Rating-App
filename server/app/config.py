@@ -4,7 +4,6 @@ class Config:
     """ Server Service Configuration
     Can be modified in .env, examples are in .env.example """
     
-    
     # Helper to read numbers using var envs
     def cast_to_number(id):
         temp = os.environ[id]
@@ -28,8 +27,6 @@ class Config:
     API_ALGORITHM = os.environ['API_ALGORITHM']
     API_ACCESS_TOKEN_EXPIRE_MINUTES = cast_to_number('API_ACCESS_TOKEN_EXPIRE_MINUTES')
     
-    GOOGLE_CLIENT_ID= os.environ['GOOGLE_CLIENT_ID']
-    GOOGLE_CLIENT_SECRET= os.environ['GOOGLE_CLIENT_SECRET']
-    
-    
+    GOOGLE_CLIENT_ID = os.environ['GOOGLE_CLIENT_ID']
+    GOOGLE_CLIENT_SECRET = os.environ['GOOGLE_CLIENT_SECRET']
     

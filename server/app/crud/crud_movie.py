@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models import model_movie
 from app.schemas import schema_movie
 
+
 def get_movie(db: Session, movie_id: int):
     return db.query(model_movie.Movie).filter(model_movie.Movie.MovieID == movie_id).first()
 
