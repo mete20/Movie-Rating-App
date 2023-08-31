@@ -33,11 +33,12 @@ def upgrade() -> None:
         sa.UniqueConstraint('Name')
     )
     op.create_index(op.f('ix_movie_MovieID'), 'movie', ['MovieID'], unique=False)
-    op.create_table('user',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('email', sa.String(length=255), nullable=True),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email'),
+    op.create_table(
+        'user',
+        sa.Column('id', sa.Integer(), nullable=False),
+        sa.Column('email', sa.String(length=255), nullable=True),
+        sa.PrimaryKeyConstraint('id'),
+        sa.UniqueConstraint('email'),
     )
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)
     op.create_table(

@@ -5,7 +5,6 @@ from .crud_movie import get_movie
 
 def create_rating(db: Session, rating: schema_rating.RatingCreate):
     db_rating = model_rating.Rating(**rating.dict())
-    user_id = db_rating.user_id
     movie_id = db_rating.movie_id
     rate = db_rating.rating
     update_movie_rating(db=db, movie_id=movie_id, rate=rate)

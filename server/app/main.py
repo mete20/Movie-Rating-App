@@ -1,4 +1,4 @@
-from fastapi import  FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .authentication.auth import auth_app
 from app.api import api_app

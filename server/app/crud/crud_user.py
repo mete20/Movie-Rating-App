@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from app.models import model_user
 from app.schemas import schema_user
 

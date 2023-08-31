@@ -50,7 +50,7 @@ def read_movie(movie_id: int, db: Session = Depends(get_db)):
 
 
 @router.delete("/{movie_id}", response_model=schema_movie.Movie)
-def delete_movie(movie_id: int, db: Session= Depends(get_db), is_admin: bool = Depends(is_admin_dep)):
+def delete_movie(movie_id: int, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)):
     db_movie = crud_movie.delete_movie(db, movie_id=movie_id)
     if db_movie is None:
         raise HTTPException(

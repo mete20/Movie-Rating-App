@@ -14,8 +14,8 @@ router = APIRouter(
 
 @router.post("/", response_model=schema_rating.Rating)
 def create_rating(
-    rating: schema_rating.RatingCreate, db: Session = Depends(get_db)
-    ):
+        rating: schema_rating.RatingCreate, db: Session = Depends(get_db)
+        ):
     db_user = crud_user.get_user(db, user_id = rating.user_id)
     db_movie = crud_movie.get_movie(db, rating.movie_id)
 
