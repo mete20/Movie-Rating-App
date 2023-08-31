@@ -54,6 +54,15 @@ def get_movie_by_id(token: str, movie_id: int) -> dict:
         return response.json()
     else:
         response.raise_for_status()
+        
+def delete_movie(token: str, movie_id: int) -> dict:
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.delete(f"{SERVER_URL}{MOVIES_ROUTE}/{movie_id}", headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        response.raise_for_status()
 
 # Example usage
 if __name__ == "__main__":
