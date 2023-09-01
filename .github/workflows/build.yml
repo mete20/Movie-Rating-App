@@ -26,5 +26,5 @@ jobs:
         docker-compose up -d
 
     - name: Run unit tests
-      run: docker-compose exec -T client bash -c "cd client/app/testing && python test.py"
+      run: docker-compose exec -T client bash -c "cd ./testing && python test.py"
 
