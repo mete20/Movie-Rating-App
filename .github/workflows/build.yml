@@ -1,0 +1,21 @@
+name: Docker Compose Build and Run
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+
+jobs:
+  docker-compose:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build and run with Docker Compose
+      run: |
+        docker-compose build
+        docker-compose up -d
+
