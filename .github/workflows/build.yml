@@ -28,3 +28,7 @@ jobs:
     - name: Run unit tests
       run: docker-compose exec -T client bash -c "cd ./testing && python test.py"
 
+    - name: Display web service logs
+      run: docker-compose logs web
+
+
