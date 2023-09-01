@@ -51,7 +51,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-  @router.delete("/{user_id}", response_model=schema_user.User)
+@router.delete("/{user_id}", response_model=schema_user.User)
 def delete_user(user_id: int, db: Session = Depends(get_db), is_admin: bool = Depends(is_admin_dep)):
     db_user = crud_user.delete_user(db, user_id=user_id)
     if db_user is None:
