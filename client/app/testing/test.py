@@ -13,7 +13,7 @@ class TestMovieClientAdmin(unittest.TestCase):
         
         
     def test_get_movies(self):        
-        movies =  main.get_movies()
+        movies = main.get_movies()
         self.assertIsInstance(movies, list, "Expected movies to be a list.")
     
             
@@ -53,7 +53,7 @@ class TestMovieClientAdmin(unittest.TestCase):
               
     def test_get_specific_movie(self):
         movie_id = 1
-        movie =  main.get_movie_by_id(movie_id)
+        movie = main.get_movie_by_id(movie_id)
         self.assertIsNotNone(movie, f"Failed to retrieve movie with ID: {movie_id}.")
        
         
@@ -61,7 +61,7 @@ class TestMovieClientAdmin(unittest.TestCase):
     def test_get_invalid_movie(self):
         movie_id = 9999  # Assuming no movie with this ID exists
         with self.assertRaises(Exception) as context:
-             main.get_movie_by_id(movie_id)
+            main.get_movie_by_id(movie_id)
         self.assertIn("404 Client Error: Not Found for url", str(context.exception), f"Expected movie with ID: {movie_id} to not exist.")
 
 
@@ -76,7 +76,7 @@ class TestMovieClientUser(unittest.TestCase):
         
         
     def test_get_movies(self):        
-        movies =  main.get_movies()
+        movies = main.get_movies()
         self.assertIsInstance(movies, list, "Expected movies to be a list.")
     
     
@@ -90,7 +90,7 @@ class TestMovieClientUser(unittest.TestCase):
             "Revenue": 134.97
         }
         with self.assertRaises(Exception) as context:
-             main.create_movie(self.token, movie)
+            main.create_movie(self.token, movie)
         error_message = str(context.exception)
         self.assertTrue("403 Client Error: Forbidden" in error_message, "Expected 403 Forbidden response.")
 
@@ -98,7 +98,7 @@ class TestMovieClientUser(unittest.TestCase):
 class TestMovieClientNoAuth(unittest.TestCase):
     
     def test_get_movies(self):        
-        movies =  main.get_movies()
+        movies = main.get_movies()
         self.assertIsInstance(movies, list, "Expected movies to be a list.")
     
     
@@ -112,7 +112,7 @@ class TestMovieClientNoAuth(unittest.TestCase):
             "Revenue": 134.97
         }
         with self.assertRaises(Exception) as context:
-             main.create_movie(self.token, movie)
+            main.create_movie(self.token, movie)
         error_message = str(context.exception)
         self.assertTrue("'TestMovieClientNoAuth' object has no attribute 'token'" in error_message, "Expected 403 Forbidden response.")
         
