@@ -4,7 +4,7 @@ import jwt
 import os
 
 # Configurations
-SERVER_URL = "http://localhost:8000"
+SERVER_URL = "http://web:8000"
 AUTH_ROUTE = "/auth/token"
 MOVIES_ROUTE = "/movies"
 USERS_ROUTE = "/users"
