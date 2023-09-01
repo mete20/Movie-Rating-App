@@ -1,7 +1,7 @@
 name: Docker Compose Build and Run
 
 on:
-  workflow_dispatch:
+  workflow-dispatch:
   push:
     branches:
       - dev  # or your default branch name
@@ -14,6 +14,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    
+    - name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
 
     - name: Build and run with Docker Compose
       run: |
