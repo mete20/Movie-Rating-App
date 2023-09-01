@@ -1,5 +1,5 @@
 import unittest
-from . import main 
+import main 
 
 class TestMovieClientAdmin(unittest.TestCase):
     
