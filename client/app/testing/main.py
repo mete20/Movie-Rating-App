@@ -11,7 +11,7 @@ USERS_ROUTE = "/users"
 API_SECRET_KEY = os.environ['API_SECRET_KEY']
 API_ALGORITHM = os.environ['API_ALGORITHM']
 
-#Authentication and Authorization
+# Authentication and Authorization
 def mock_authorize(email: str):
     """
     Mock the authorization process for a given email.
