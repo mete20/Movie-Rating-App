@@ -1,7 +1,7 @@
 name: Docker Compose Build and Run
 
 on:
-  workflow-dispatch:
+  workflow_dispatch:
   push:
     branches:
       - dev  # or your default branch name
