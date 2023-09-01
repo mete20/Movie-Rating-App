@@ -3,12 +3,11 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
-    platform: ${PLATFORM} #linux/arm64 linux/amd64
+    #platform: ${PLATFORM} #linux/arm64 linux/amd64
     restart: always
     volumes:
       - mysql-data:/var/lib/mysql
       - ./mysql/conf.d:/etc/mysql/conf.d:ro
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - ${MYSQL_PORT}:3306
     environment:

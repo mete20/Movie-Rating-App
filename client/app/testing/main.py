@@ -18,9 +18,12 @@ def mock_authorize(email: str):
     :param email: The email to be authorized.
     :return: A dictionary containing the access token.
     """
+
     expire_time = datetime.utcnow() + timedelta(minutes=15)
     user_info = {'sub': email, 'exp': expire_time}
-    access_token = jwt.encode(user_info, API_SECRET_KEY, algorithm=API_ALGORITHM)
+    access_token = jwt.encode(
+        user_info, API_SECRET_KEY, algorithm=API_ALGORITHM
+        )
     return {
         'access_token': access_token,
     }
@@ -29,6 +32,7 @@ def mock_authorize(email: str):
 def mock_authenticate_admin():
     tokens = mock_authorize("test@ku.edu.tr")
     return tokens.get("access_token")
+
 
 
 def mock_authenticate_user():
@@ -53,13 +57,12 @@ def create_movie(token: str, movie: dict) -> dict:
 
 
 def get_movie_by_id(movie_id: int) -> dict:
-    response = requests.get(f"{SERVER_URL}{MOVIES_ROUTE}/{movie_id}")
-    
+    response = requests.get(f"{SERVER_URL}{MOVIES_ROUTE}/{movie_id}")    
     if response.status_code == 200:
         return response.json()
     else:
         response.raise_for_status()
-   
+
         
 def delete_movie(token: str, movie_id: int) -> dict:
     headers = {"Authorization": f"Bearer {token}"}

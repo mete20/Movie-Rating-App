@@ -3,6 +3,7 @@ import main
 
 class TestMovieClientAdmin(unittest.TestCase):
     
+    
     def setUp(self):
         self.token = main.mock_authenticate_admin()
     
@@ -26,7 +27,7 @@ class TestMovieClientAdmin(unittest.TestCase):
             "Revenue": 134.97
         }
         with self.assertRaises(Exception) as context:
-             main.create_movie(self.token, movie)
+            main.create_movie(self.token, movie)
         error_message = str(context.exception)
         self.assertTrue("Movie already exist" in error_message or "400 Client Error: Bad Request" in error_message,
                         "Expected movie creation to fail.")
@@ -47,12 +48,14 @@ class TestMovieClientAdmin(unittest.TestCase):
         movie_id = response["MovieID"]
         deleted_movie = main.delete_movie(self.token, movie_id)
         self.assertEqual(deleted_movie["Name"], movie["Name"], "Failed to delete movie.")
+       
               
               
     def test_get_specific_movie(self):
         movie_id = 1
         movie =  main.get_movie_by_id(movie_id)
         self.assertIsNotNone(movie, f"Failed to retrieve movie with ID: {movie_id}.")
+       
         
         
     def test_get_invalid_movie(self):
@@ -161,4 +164,5 @@ class TestUserClientAdmin(unittest.TestCase):
 '''
 
 if __name__ == "__main__":
+    print("hello")
     unittest.main()

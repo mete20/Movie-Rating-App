@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI Client</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<!-- Buttons -->
+<button onClick="send()">Get FastAPI JWT Token</button>
+<button onClick="callAPI('http://localhost:8000/api/')">Call Unprotected API</button>
+<button onClick="callAPI('http://localhost:8000/api/protected')">Call Protected API without JWT</button>
+<button onClick="callAPIWithAuth('http://localhost:8000/api/protected')">Call Protected API with JWT</button>
+<button onClick="callAPIWithAuth('http://localhost:8000/users')">Get Users</button>
+<button onClick="logout()">Logout</button>
+<button onClick="refresh()">Refresh</button>
+<button onClick="getMovies()">Get Movies</button>
+
+<!-- Movie Form -->
+<form id="movieForm">
+    <h3>Add a Movie</h3>
+    <label for="movieName">Name:</label><br>
+        <input type="text" id="movieName" name="movieName"><br><br>
+        
+        <label for="movieYear">Year:</label><br>
+        <input type="number" id="movieYear" name="movieYear"><br><br>
+        
+        <label for="movieRuntime">Runtime:</label><br>
+        <input type="number" id="movieRuntime" name="movieRuntime"><br><br>
+        
+        <label for="movieRating">Rating:</label><br>
+        <input type="number" id="movieRating" name="movieRating" step="0.01"><br><br>
+        
+        <label for="movieVotes">Votes:</label><br>
+        <input type="number" id="movieVotes" name="movieVotes"><br><br>
+        
+        <label for="movieRevenue">Revenue:</label><br>
+        <input type="number" id="movieRevenue" name="movieRevenue" step="0.01"><br><br>
+        
+        <input type="button" value="Submit" onClick="postMovie()">
+</form>
+
+<!-- Movies Table -->
+<table id="moviesTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Runtime</th>
+            <th>Rating</th>
+            <th>Votes</th>
+            <th>Revenue</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+
+<script>
+    function send(){
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function() {
+            if (req.readyState === 4) {
+                console.log(req.response);
+                if (req.response["result"] === true) {
+                    window.localStorage.setItem('jwt', req.response["access_token"]);
+                    window.localStorage.setItem('refresh', req.response["refresh_token"]);
+                }
+            }
+        }
+        req.withCredentials = true;
+        req.responseType = 'json';
+        req.open("get", "http://localhost:8000/auth/token?"+window.location.search.substr(1), true);
+        req.send("");
+
+    }
+
+    function callAPI(url) {
+        fetch(url)
+        .then(r => r.json())
+        .then(msg => console.log(msg));
+    }
+
+    function callAPIWithAuth(url) {
+        fetch(url, {
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+            }
+        })
+        .then(r => r.json())
+        .then(msg => console.log(msg));
+    }
+
+    function logout() {
+        fetch("http://localhost:8000/logout", {
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+            }
+        })
+        .then(r => r.json())
+        .then(msg => {
+            console.log(msg);
+            if (msg["result"] === true) {
+                window.localStorage.removeItem("jwt");
+            }
+        });
+    }
+
+    function refresh() {
+        fetch("http://localhost:8000/auth/refresh", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+            },
+            body: JSON.stringify({
+                grant_type: "refresh_token",
+                refresh_token: window.localStorage.getItem("refresh")
+            })
+        })
+        .then(r => r.json())
+        .then(msg => {
+            console.log(msg);
+            if (msg["result"] === true) {
+                window.localStorage.setItem("jwt", msg["access_token"]);
+            }
+        });
+    }
+
+    function postMovie(){
+        var movieName = document.getElementById('movieName').value;
+        var movieYear = document.getElementById('movieYear').value;
+        var movieRuntime = document.getElementById('movieRuntime').value;
+        var movieRating = document.getElementById('movieRating').value;
+        var movieVotes = document.getElementById('movieVotes').value;
+        var movieRevenue = document.getElementById('movieRevenue').value;
+
+        fetch("http://localhost:8000/movies/", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.getItem("jwt"),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "Name": movieName,
+                "Year": movieYear,
+                "Runtime": movieRuntime,
+                "Rating": movieRating,
+                "Votes": movieVotes,
+                "Revenue": movieRevenue
+            })
+        }).then((r) => r.json()).then((msg) => { console.log(msg); });
+    }
+
+    function getMovies() {
+        fetch("http://localhost:8000/movies/", {
+            headers: {
+                "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+            }
+        })
+        .then((r) => r.json())
+        .then((movies) => {
+            let tableBody = document.getElementById('moviesTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';  // Clear any existing rows
+
+            movies.forEach(movie => {
+                let row = tableBody.insertRow();
+                let cell1 = row.insertCell(0);
+                let cell2 = row.insertCell(1);
+                let cell3 = row.insertCell(2);
+                let cell4 = row.insertCell(3);
+                let cell5 = row.insertCell(4);
+                let cell6 = row.insertCell(5);
+                let cell7 = row.insertCell(6);
+
+                cell1.innerHTML = movie.Name;
+                cell2.innerHTML = movie.Year;
+                cell3.innerHTML = movie.Runtime;
+                cell4.innerHTML = movie.Rating;
+                cell5.innerHTML = movie.Votes;
+                cell6.innerHTML = movie.Revenue;
+                cell7.innerHTML = generateRatingDropdown(movie.MovieID);
+            });
+        });
+    }
+
+    function getUserDetails() {
+        return new Promise((resolve, reject) => {
+            fetch("http://localhost:8000/users/details/", {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer " + window.localStorage.getItem("jwt")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.error("Error fetching user details:", error);
+                reject(error);
+            });
+        });
+    }
+    
+    
+    
+    function generateRatingDropdown(movieId) {
+        var dropdown = '<select onchange="submitRatingWithUser(this, ' + movieId + ')">';
+        for (var i = 1; i <= 10; i++) {
+            dropdown += '<option value="' + i + '">' + i + '</option>';
+        }
+        dropdown += '</select>';
+        return dropdown;
+    }
+    
+    
+    function submitRatingWithUser(selectElement, movieId) {
+        getUserDetails().then(userDetails => {
+            var rating = selectElement.value;
+            var userId = userDetails.user_id;  // Extract the userId from userDetails
+    
+            fetch("http://localhost:8000/ratings/", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + window.localStorage.getItem("jwt"),
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "user_id": userId,  // Send the userId
+                    "movie_id": movieId,
+                    "rating": rating
+                })
+            })
+            .then((r) => r.json())
+            .then((msg) => { console.log(msg); });
+    
+        }).catch(error => {
+            console.error("Failed to submit rating:", error);
+        });
+    }
+    
+    
+</script>
+
+</body>
+</html>
