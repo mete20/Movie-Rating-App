@@ -23,6 +23,9 @@ jobs:
     - name: Build and run with Docker Compose
       run: |
         docker-compose up --build
-        docker-compose down
+        
+    - name: Stop Containers
+      if: always()
+      run: docker-compose -f "docker-compose.yml" down
 
 
