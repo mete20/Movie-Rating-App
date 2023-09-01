@@ -22,7 +22,11 @@ jobs:
 
     - name: Build and run with Docker Compose
       run: |
-        docker-compose up --build
+        docker-compose up -d --build
+
+    - name: Test
+      run: |
+        docker-compose exec -T client bash -c "cd ./testing && python test.py"
         
 
 
