@@ -1,9 +1,10 @@
 name: Docker Compose Build and Run
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - main  # or your default branch name
+      - dev  # or your default branch name
 
 jobs:
   docker-compose:
