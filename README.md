@@ -1,4 +1,4 @@
-# End-to-End Development: From FastAPI to Deployment with Docker
+# Movie Rating App (Internship project at Lifemote Networks)
 
 * Developed a full-stack web app allowing users to rate and access information on IMDb’s top movies.
 * Learned REST APIs and developed web APIs using FastAPI. Used Docker for creating and managing development
